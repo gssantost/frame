@@ -1,0 +1,28 @@
+{
+  "name": "fungram-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.3.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg-promise": "^8.4.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "ws": "3.3.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "nodemon ./src/index.js --exec babel-node --trace-warnings"
+  },
+  "author": "",
+  "license": "ISC"
+}
