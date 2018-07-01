@@ -1,12 +1,13 @@
 import JsonWebToken from 'jsonwebtoken'
 import passport from 'passport'
 import helpers from '../helpers'
+import queries from '../helpers/queries';
 
-const { config } = helpers
+const { config, db } = helpers
 
 const get = (req, res) => {
   res.send({
-    session: req.user
+    data: req.user
   })
 }
 
@@ -36,4 +37,20 @@ const post = (req, res, next) => {
   })(req, res, next)
 }
 
-export default { get, post }
+const getUser = (req, res) => {
+  const { user_id } = req.user;
+
+  db.connect().then((obj) => {
+    obj.one(queries.user['selectById'], user_id)
+      .then((data) => {
+        res.send({status: 200, data})
+      })
+      .catch((e) => {
+        res.send({status: 402, error: e.message || e})
+      })
+  }).catch((e) => {
+    res.send({status: 500, error: e.message || e})
+  })
+}
+
+export default { get, post, getUser }
