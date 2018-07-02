@@ -21,20 +21,14 @@ CREATE TABLE public.app_user (
                 username VARCHAR(30) NOT NULL,
                 password VARCHAR(32) NOT NULL,
                 email VARCHAR(60) NOT NULL,
-                type_id INTEGER NOT NULL,
+                type_id INTEGER DEFAULT 1 NOT NULL,
+                bio VARCHAR(400) NOT NULL,
+                profile_pic VARCHAR(300) NOT NULL,
                 CONSTRAINT app_user_pk PRIMARY KEY (user_id)
 );
 
 
 ALTER SEQUENCE public.app_user_user_id_seq OWNED BY public.app_user.user_id;
-
-CREATE TABLE public.app_user_detail (
-                user_id INTEGER NOT NULL,
-                user_pic VARCHAR(300) NOT NULL,
-                user_bio VARCHAR(300) NOT NULL,
-                CONSTRAINT app_user_detailpk PRIMARY KEY (user_id)
-);
-
 
 CREATE SEQUENCE public.comments_comment_id_seq_1;
 
@@ -109,13 +103,6 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.likes ADD CONSTRAINT app_user_likes_fk
-FOREIGN KEY (user_id)
-REFERENCES public.app_user (user_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE public.app_user_detail ADD CONSTRAINT app_user_app_user_detail_fk
 FOREIGN KEY (user_id)
 REFERENCES public.app_user (user_id)
 ON DELETE NO ACTION

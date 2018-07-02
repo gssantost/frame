@@ -6,7 +6,6 @@ import helpers from './helpers'
 import Routes from './routes'
 
 const app = express();
-
 const { config, Strategies } = helpers
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

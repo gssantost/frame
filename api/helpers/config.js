@@ -1,6 +1,10 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const config = {
   secret: 'theseViolentDelightsHaveViolentEnds',
-  port: 3000
+  port: process.env.PORT || 8888
 }
 
 export default config;
