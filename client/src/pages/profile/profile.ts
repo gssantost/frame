@@ -99,7 +99,7 @@ export class ProfilePage {
       }
     }
 
-    this.picService.upload(`${srv.BASE_URL}/upload/up`, options)
+    this.picService.upload(`${srv.BASE_URL}/users/`, options)
       .then((data) => {
         console.log(JSON.stringify(data) + " Uploaded Successfully");
         loader.dismiss();
