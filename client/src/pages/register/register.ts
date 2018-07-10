@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Credentials, MessageController } from '../../helpers';
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
+import { Credentials, MessageController } from '../../utils';
+import { UsersProvider } from '../../providers/users/users';
 
 /**
  * Generated class for the RegisterPage page.
@@ -24,7 +24,7 @@ export class RegisterPage {
     password: ''
   }
 
-  constructor(private auth: AuthenticationProvider, public navCtrl: NavController, public navParams: NavParams,
+  constructor(private userService: UsersProvider, public navCtrl: NavController, public navParams: NavParams,
               public msgCtrl: MessageController) {}
 
   ionViewDidLoad() {
@@ -33,7 +33,7 @@ export class RegisterPage {
 
   register() {
     console.log('Register!');
-    this.auth.register(this.credentials).subscribe((data) => {
+    this.userService.register(this.credentials).subscribe((data) => {
       if (data.status === 200) {
         this.msgCtrl.show('Success', data.message, () => this.navCtrl.popToRoot());
       } else {

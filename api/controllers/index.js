@@ -1,4 +1,4 @@
-import Signup from './signupController'
-import Auth from './authController'
+import File from './fileController'
+import User from './UserController'
 
-export { Signup, Auth }
+export { File, User }

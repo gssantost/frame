@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Credentials } from '../../helpers';
+import { Credentials, Urls as srv } from '../../utils';
 import { Storage } from '@ionic/storage';
 
 /*
@@ -11,10 +11,8 @@ import { Storage } from '@ionic/storage';
   and Angular DI.
 */
 @Injectable()
-export class AuthenticationProvider {
+export class UsersProvider {
 
-  private IP: string = '192.168.0.104';
-  private BASE_URL: string = `http://${this.IP}:3000/api`;
   private token: string;
 
   constructor(private http: HttpClient, private storage: Storage) {}
@@ -37,15 +35,15 @@ export class AuthenticationProvider {
   }
 
   register(user: Credentials): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/signup/`, user);
+    return this.http.post(`${srv.BASE_URL}/users/signup`, user);
   }
 
   login(user: Credentials): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/auth/login`, user);
+    return this.http.post(`${srv.BASE_URL}/users/login`, user);
   }
 
   getUserProfile(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/auth/profile`, { 
+    return this.http.get(`${srv.BASE_URL}/users/`, { 
       headers: {
         Authorization: `Bearer ${this.getToken()}` 
       }

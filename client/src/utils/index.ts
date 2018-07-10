@@ -1,3 +1,5 @@
 import { Credentials, User } from './interfaces';
 import { MessageController } from './messageCtrl';
-export { Credentials, User, MessageController };
+import { Urls } from './urls';
+
+export { Credentials, User, Urls, MessageController };

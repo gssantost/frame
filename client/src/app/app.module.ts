@@ -6,10 +6,16 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
-import { AuthenticationProvider } from '../providers/authentication/authentication';
+import { UsersProvider } from '../providers/users/users';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
-import { MessageController } from '../helpers';
+import { MessageController } from '../utils';
+
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { FilePath } from '@ionic-native/file-path'
+import { File } from '@ionic-native/file';
+import { Camera } from '@ionic-native/camera';
+import { PictureProvider } from '../providers/picture/picture';
 
 @NgModule({
   declarations: [
@@ -32,8 +38,14 @@ import { MessageController } from '../helpers';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     HttpClient,
+    FileTransfer,
+    FileTransferObject,
+    File,
+    FilePath,
+    Camera,
     MessageController,
-    AuthenticationProvider,
+    UsersProvider,
+    PictureProvider,
   ]
 })
 export class AppModule {}

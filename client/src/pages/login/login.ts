@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
-import { Credentials, MessageController } from '../../helpers';
+import { UsersProvider } from '../../providers/users/users';
+import { Credentials, MessageController } from '../../utils';
 
 
 /**
@@ -23,7 +23,9 @@ export class LoginPage {
     password: ''
   }
 
-  constructor(private auth: AuthenticationProvider, public navCtrl: NavController, public navParams: NavParams,
+  constructor(private userService: UsersProvider, 
+              public navCtrl: NavController, 
+              public navParams: NavParams,
               public msg: MessageController) {
   }
 
@@ -36,17 +38,17 @@ export class LoginPage {
   }
 
   login() {
-    this.auth.login(this.credentials).subscribe((data) => {
+    this.userService.login(this.credentials).subscribe((data) => {
       if (data.status === 200) {
-        this.auth.setToken(data.token);
+        this.userService.setToken(data.token);
         this.msg.show('Success', data.message, () => {
         this.navCtrl.setRoot('TabsPage');
         });
       } else {
-        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data.error));
         this.msg.show('Error', data.error.message || data.error);
       }
-    })
+    }, (error) => console.log(JSON.stringify(error)))
   }
 
 }
