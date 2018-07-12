@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Credentials, Urls as srv } from '../../utils';
+import { Credentials, Urls as srv, User } from '../../utils';
 import { Storage } from '@ionic/storage';
 
 /*
@@ -40,6 +40,14 @@ export class UsersProvider {
 
   login(user: Credentials): Observable<any> {
     return this.http.post(`${srv.BASE_URL}/users/login`, user);
+  }
+
+  putUserProfile(user: User): Observable<any> {
+    return this.http.put(`${srv.BASE_URL}/users/`, user, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    })
   }
 
   getUserProfile(): Observable<any> {

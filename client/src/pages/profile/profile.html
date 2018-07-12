@@ -7,8 +7,8 @@
 <ion-header>
   
   <ion-navbar>
-    <ion-title>Profile</ion-title>
-
+    <ion-title>{{user.username}}</ion-title>
+    
     <ion-buttons end>
       <button ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
@@ -22,38 +22,48 @@
 <ion-content padding>
   
   <ion-grid>
-    
     <ion-row>
-      <ion-col></ion-col>
-      <ion-col>
-        <!--<img [src]=sanitizer.bypassSecurityTrustUrl(user.profile_pic)>-->
+      <ion-col col-4>
         <img src={{user.profile_pic}}>
-        <button ion-button icon-only (click)="presentActionSheet()">
-          <ion-icon name="add-circle"></ion-icon>
-        </button>
       </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-    
-    <ion-row>
+      <ion-col col-8 padding-left>
+        <table>
+          <tr>
+            <th padding-bottom padding-right padding-left>0</th>
+            <th padding-bottom padding-right>0</th>
+            <th padding-bottom padding-right>0</th>
+          </tr>
+          <tr>
+            <th padding-right padding-left>posts</th>
+            <th padding-right>followers</th>
+            <th padding-right>following</th>
+          </tr>
+        </table>
+        <ion-row>
+          <ion-col style="text-align: center">
+            <button ion-button outline color="dark" small (click)="edit()">
+              Edit profile
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
       <ion-col>
-        <div text-center>
-          <h1>{{user.fullname}}</h1>
-          <p>{{user.username}}</p>
-          <p>{{user.email}}</p>
-          <p>{{user.bio}}</p>
-        </div>
+        <p><strong>{{user.fullname}}</strong></p>
+        <p>{{user.bio}}</p>
+        <p><strong>Contact: </strong>{{user.email}}</p>
       </ion-col>
     </ion-row>
-    
-    <ion-row>
+
+    <!-- 
+      <ion-row>
       <ion-col></ion-col>
       <ion-col>
         <button ion-button (click)="upload()">Upload</button>
       </ion-col>
       <ion-col></ion-col>
     </ion-row>
-    
+    -->
+
   </ion-grid>
   
 </ion-content>

@@ -57,6 +57,9 @@ const postPicture = (req, res) => {
 const putUser = (req, res) => {
   const { fullname, username, email, bio } = req.body
 
+  console.log(req.body)
+  console.log(req.file)
+
   db.connect().then((obj) => {
     obj.any(queries.user['updateUser'], [fullname, username, bio, email, req.user.user_id])
       .then((data) => {

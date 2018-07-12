@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ActionSheetController } from 'ionic-angular';
-import { Camera } from '@ionic-native/camera';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { User, MessageController, Urls as srv } from '../../utils';
+import { User, Urls as srv } from '../../utils';
 import { UsersProvider } from '../../providers/users/users';
-import { PictureProvider } from '../../providers/picture/picture';
 import { LoginPage } from '../login/login';
+import { EditPage } from '../edit/edit';
 
 /**
  * Generated class for the ProfilePage page.
@@ -27,9 +26,7 @@ export class ProfilePage {
   user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
 
   constructor(public navCtrl: NavController, public sanitizer: DomSanitizer, public navParams: NavParams, 
-              private userService: UsersProvider, private camera: Camera, private loadCtrl: LoadingController, 
-              private actionSheetCtrl: ActionSheetController, private msg: MessageController, 
-              private picService: PictureProvider) {}
+              private userService: UsersProvider) {}
 
 
   ionViewDidLoad() {
@@ -56,60 +53,8 @@ export class ProfilePage {
     })
   }
 
-  safeImage() {
-    return this.sanitizer.bypassSecurityTrustUrl(this.user.profile_pic);
-  }
-
-  presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
-      buttons: [
-        {
-          text: 'Load from Library',
-          handler: () => {
-            this.picService.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-          }
-        },
-        {
-          text: 'Use Camera',
-          handler: () => {
-            this.picService.takePicture(this.camera.PictureSourceType.CAMERA);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  upload() {
-    let loader = this.loadCtrl.create({
-      content: 'Uploading...'
-    });
-
-    loader.present();
-
-    let options = {
-      mimeType: 'multipart/form-data',
-      headers: {
-        Authorization: `Bearer ${this.userService.getToken()}`
-      }
-    }
-
-    this.picService.upload(`${srv.BASE_URL}/users/`, options)
-      .then((data) => {
-        console.log(JSON.stringify(data) + " Uploaded Successfully");
-        loader.dismiss();
-        this.msg.show('Success', JSON.stringify(data));
-      })
-      .catch((err) => {
-        console.log(JSON.stringify(err));
-        loader.dismiss();
-        this.msg.show('Error', JSON.stringify(err));
-      })
+  edit() {
+    this.navCtrl.push(EditPage);
   }
 
   logout() {

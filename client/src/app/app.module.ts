@@ -16,11 +16,13 @@ import { FilePath } from '@ionic-native/file-path'
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { PictureProvider } from '../providers/picture/picture';
+import { EditPage } from '../pages/edit/edit';
 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage
+    LoginPage,
+    EditPage
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { PictureProvider } from '../providers/picture/picture';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage
+    LoginPage,
+    EditPage
   ],
   providers: [
     StatusBar,
