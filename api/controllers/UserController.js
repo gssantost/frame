@@ -18,9 +18,11 @@ const getUser = (req, res) => {
     obj.one(queries.user['selectById'], user_id)
       .then((data) => {
         res.send({status: 200, data})
+        obj.done()
       })
       .catch((e) => {
         res.send({status: 402, error: e.message || e})
+        obj.done()
       })
   }).catch((e) => {
     res.send({status: 500, error: e.message || e})
@@ -33,12 +35,13 @@ const postPicture = (req, res) => {
     res.send({status: 400, message: 'No file found!'})
   }
   
+  const { fullname, username, email, bio } = req.body;
   console.log(req.file);
   
   db.connect().then(obj => {
-    obj.any(queries.user['updateUserPic'], [req.file.path, req.user.user_id])
+    obj.any(queries.user['updateUserPic'], [fullname, username, bio, email, req.file.path, req.user.user_id])
       .then(data => {
-        res.send({status: 200, message: 'Profile picture updated!', data})
+        res.send({status: 200, message: 'Your profile has changed!'})
         obj.done()
       })
       .catch(e => {
@@ -65,10 +68,12 @@ const putUser = (req, res) => {
       .then((data) => {
         console.log(data)
         res.send({status: 200, message: 'Your profile has changed!'})
+        obj.done()
       })
       .catch((e) => {
         console.log(e.message || e)
         res.send({status: 402, error: e.message || e})
+        obj.done()
       })
   }).catch((e) => {
     res.send({status: 500, error: e.message || e})

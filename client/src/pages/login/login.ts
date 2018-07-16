@@ -23,11 +23,11 @@ export class LoginPage {
     password: ''
   }
 
-  constructor(private userService: UsersProvider, 
-              public navCtrl: NavController, 
-              public navParams: NavParams,
-              public msg: MessageController) {
-  }
+  constructor(
+    private userService: UsersProvider, 
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public msg: MessageController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
@@ -38,15 +38,18 @@ export class LoginPage {
   }
 
   login() {
+    this.msg.load();
     this.userService.login(this.credentials).subscribe((data) => {
       if (data.status === 200) {
         this.userService.setToken(data.token);
         this.msg.show('Success', data.message, () => {
         this.navCtrl.setRoot('TabsPage');
         });
+        this.msg.dismiss();
       } else {
         console.log(JSON.stringify(data.error));
         this.msg.show('Error', data.error.message || data.error);
+        this.msg.dismiss();
       }
     }, (error) => console.log(JSON.stringify(error)))
   }

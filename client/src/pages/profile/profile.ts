@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DomSanitizer } from '@angular/platform-browser';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 
 import { User, Urls as srv } from '../../utils';
 import { UsersProvider } from '../../providers/users/users';
@@ -25,16 +24,14 @@ export class ProfilePage {
 
   user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
 
-  constructor(public navCtrl: NavController, public sanitizer: DomSanitizer, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private app: App,
               private userService: UsersProvider) {}
 
 
   ionViewDidLoad() {
     this.getUserProfile()
-  }
-
-  public getSafeUrl(url: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   ionViewDidEnter() {
@@ -59,7 +56,7 @@ export class ProfilePage {
 
   logout() {
     this.userService.setToken('');
-    this.navCtrl.setRoot(LoginPage);
+    this.app.getRootNav().setRoot(LoginPage);
   }
 
 }

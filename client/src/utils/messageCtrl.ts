@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
-import { AlertController } from "ionic-angular";
+import { AlertController, LoadingController, Loading } from "ionic-angular";
 
 @Injectable()
 export class MessageController {
-  constructor(private alertCtrl: AlertController) {}
+
+  loader: Loading;
+
+  constructor(private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
 
   show(title, text, cb?) {
     let alert = this.alertCtrl.create({
@@ -17,6 +20,17 @@ export class MessageController {
       ]
     });
     alert.present();
+  }
+
+  load(loadingMessage?: string) {
+    this.loader = this.loadingCtrl.create({
+      content: 'Loading...' || loadingMessage
+    });
+    this.loader.present();
+  }
+
+  dismiss() {
+    this.loader.dismiss();
   }
 
 }

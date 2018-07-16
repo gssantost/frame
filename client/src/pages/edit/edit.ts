@@ -21,9 +21,15 @@ export class EditPage {
 
   user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UsersProvider, 
-              private actionSheetCtrl: ActionSheetController, private pictureService: PictureProvider, private camera: Camera, private msg: MessageController, private loadCtrl: LoadingController) {
-  }
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    private userService: UsersProvider, 
+    private actionSheetCtrl: ActionSheetController, 
+    private pictureService: PictureProvider, 
+    private camera: Camera, 
+    private msg: MessageController, 
+    private loadCtrl: LoadingController) {}
 
   ionViewDidLoad() {
     this.getUserProfile()
@@ -72,13 +78,16 @@ export class EditPage {
 
   send() {
     if (this.pictureService.getPicture() === '') {
+      this.msg.load('Please wait...')
       this.userService.putUserProfile(this.user).subscribe((data) => {
         if (data.status === 200) {
+          this.msg.dismiss();
           this.msg.show('Success', data.message, () => {
             this.navCtrl.pop();
           });
         } else {
           console.log(JSON.stringify(data.error));
+          this.msg.dismiss();
           this.msg.show('Error', data.error.message || data.error);
         }
       }, (error) => console.log(JSON.stringify(error)))
@@ -92,11 +101,7 @@ export class EditPage {
   }
 
   upload() {
-    let loader = this.loadCtrl.create({
-      content: 'Uploading...'
-    });
-
-    loader.present();
+    this.msg.load('Uploading...');
 
     let options = {
       mimeType: 'multipart/form-data',
@@ -104,19 +109,22 @@ export class EditPage {
         Authorization: `Bearer ${this.userService.getToken()}`
       },
       params: {
-        fullname: this.user.fullname
+        fullname: this.user.fullname,
+        username: this.user.username,
+        bio: this.user.bio,
+        email: this.user.email
       }
     }
 
     this.pictureService.upload(`${srv.BASE_URL}/users/`, options)
       .then((data) => {
         console.log(JSON.stringify(data) + " Uploaded Successfully");
-        loader.dismiss();
-        this.msg.show('Success', JSON.stringify(data));
+        this.msg.dismiss();
+        this.msg.show('Success', JSON.stringify(data.response));
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
-        loader.dismiss();
+        this.msg.dismiss();
         this.msg.show('Error', JSON.stringify(err));
       })
   }

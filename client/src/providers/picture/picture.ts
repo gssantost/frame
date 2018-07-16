@@ -17,7 +17,14 @@ export class PictureProvider {
 
   picture: string = '';
 
-  constructor(public http: HttpClient, private file: File, private transfer: FileTransfer, private filePath: FilePath,            private camera: Camera, private platform: Platform, private toastCtrl: ToastController) {}
+  constructor (
+    public http: HttpClient, 
+    private file: File, 
+    private transfer: FileTransfer, 
+    private filePath: FilePath,
+    private camera: Camera, 
+    private platform: Platform, 
+    private toastCtrl: ToastController) {}
   
   takePicture(sourceType, errorHandler?) {
     const options = {
@@ -60,9 +67,9 @@ export class PictureProvider {
   /** OK, it works with a promise too */
   upload(url, options): Promise<FileUploadResult> {
     return new Promise((res, rej) => {
-      let targetPath = this.pathForImage(this.getPicture());
       let filename = this.getPicture();
-
+      let targetPath = this.pathForImage(filename);
+      
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       const configs: FileUploadOptions = {
