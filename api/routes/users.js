@@ -1,6 +1,6 @@
 import express from 'express';
 import { User as UserController } from '../controllers';
-import profileUpload from '../middlewares/profile-upload';
+import profileUpload from '../middlewares/profileUpload';
 
 const router = express.Router();
 

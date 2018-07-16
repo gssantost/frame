@@ -2,7 +2,7 @@ import multer from 'multer';
 import mkdirp from 'mkdirp';
 import helpers from '../helpers';
 
-const { config, fileCheck } = helpers
+const { config } = helpers
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
