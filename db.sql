@@ -19,7 +19,7 @@ CREATE TABLE public.app_user (
                 user_id INTEGER NOT NULL DEFAULT nextval('public.app_user_user_id_seq'),
                 fullname VARCHAR(60) NOT NULL,
                 username VARCHAR(30) NOT NULL,
-                password VARCHAR(32) NOT NULL,
+                password VARCHAR(255) NOT NULL,
                 email VARCHAR(60) NOT NULL,
                 type_id INTEGER DEFAULT 1 NOT NULL,
                 bio VARCHAR(400) NOT NULL,
@@ -30,6 +30,27 @@ CREATE TABLE public.app_user (
 
 ALTER SEQUENCE public.app_user_user_id_seq OWNED BY public.app_user.user_id;
 
+CREATE TABLE public.follow (
+                follow_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                CONSTRAINT follow_pk PRIMARY KEY (follow_id, user_id)
+);
+
+
+CREATE SEQUENCE public.media_media_id_seq;
+
+CREATE TABLE public.media (
+                media_id INTEGER NOT NULL DEFAULT nextval('public.media_media_id_seq'),
+                media_des VARCHAR(300) NOT NULL,
+                media_url VARCHAR(300) NOT NULL,
+                created_at TIMESTAMP NOT NULL,
+                user_id INTEGER NOT NULL,
+                CONSTRAINT media_pk PRIMARY KEY (media_id)
+);
+
+
+ALTER SEQUENCE public.media_media_id_seq OWNED BY public.media.media_id;
+
 CREATE SEQUENCE public.comments_comment_id_seq_1;
 
 CREATE TABLE public.comments (
@@ -37,27 +58,12 @@ CREATE TABLE public.comments (
                 comment_text VARCHAR(250) NOT NULL,
                 created_at TIMESTAMP NOT NULL,
                 user_id INTEGER NOT NULL,
+                media_id INTEGER NOT NULL,
                 CONSTRAINT comments_pk PRIMARY KEY (comment_id)
 );
 
 
 ALTER SEQUENCE public.comments_comment_id_seq_1 OWNED BY public.comments.comment_id;
-
-CREATE SEQUENCE public.media_media_id_seq;
-
-CREATE TABLE public.media (
-                media_id INTEGER NOT NULL DEFAULT nextval('public.media_media_id_seq'),
-                media_text VARCHAR(300) NOT NULL,
-                media_url VARCHAR(300) NOT NULL,
-                media_filename VARCHAR(50) NOT NULL,
-                created_at TIMESTAMP NOT NULL,
-                user_id INTEGER NOT NULL,
-                comment_id INTEGER NOT NULL,
-                CONSTRAINT media_pk PRIMARY KEY (media_id)
-);
-
-
-ALTER SEQUENCE public.media_media_id_seq OWNED BY public.media.media_id;
 
 CREATE TABLE public.media_tags (
                 media_id INTEGER NOT NULL,
@@ -109,9 +115,9 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.media ADD CONSTRAINT comments_posts_fk
-FOREIGN KEY (comment_id)
-REFERENCES public.comments (comment_id)
+ALTER TABLE public.follow ADD CONSTRAINT app_user_follow_fk
+FOREIGN KEY (user_id)
+REFERENCES public.app_user (user_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -124,6 +130,13 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.media_tags ADD CONSTRAINT posts_posts_tags_fk
+FOREIGN KEY (media_id)
+REFERENCES public.media (media_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE public.comments ADD CONSTRAINT media_comments_fk
 FOREIGN KEY (media_id)
 REFERENCES public.media (media_id)
 ON DELETE NO ACTION
