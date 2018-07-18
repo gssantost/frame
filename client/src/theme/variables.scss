@@ -41,6 +41,8 @@ $colors: (
   dark:       #222
 );
 
+$card-md-margin-left: 0;
+$card-md-margin-right: 0;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -86,3 +88,8 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+@font-face {
+  font-family: 'BeautyMountainsPersonalUse';
+  src: url(../assets/fonts/BeautyMountainsPersonalUse.ttf) format('ttf');
+}

@@ -1,18 +1,65 @@
 <!--
   Generated template for the HomePage page.
-
+  
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
-
+  
   <ion-navbar>
     <ion-title>Home</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="search()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
+  
 </ion-header>
 
 
 <ion-content padding>
-  <h1>Dashboard Here!</h1>
+  <ion-card *ngFor="let post of posts">
+    <ion-item>
+      <!-- <ion-avatar item-start>
+        <img src="{{user.profile_pic}}">
+      </ion-avatar>
+      <h2>{{user.username}}</h2> -->
+      <p><small>{{post.created_at}}</small></p>
+    </ion-item>
+
+    <img class="img-container" src="{{post.media_url}}">
+        
+    <ion-row>
+      <ion-col col-1>
+        <button ion-button icon-start clear small>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div></div>
+        </button>
+      </ion-col>
+      <ion-col col-1>
+        <button ion-button icon-start clear small>
+          <ion-icon name="text"></ion-icon>
+          <div></div>
+        </button>
+      </ion-col>
+        </ion-row>
+
+    <ion-card-content>
+      <p><small>{{post.media_des}}</small></p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content 
+      loadingSpinner="bubbles" 
+      loadingText="Loading more posts...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

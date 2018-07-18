@@ -14,3 +14,13 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+/*ion-page.login > ion-content {
+  background-image: url('../assets/imgs/welcome.jpg');
+  background-color: transparent;
+}*/
+
+@font-face {
+  font-family: 'BeautyMountainsPersonalUse';
+  src: url(../assets/fonts/BeautyMountainsPersonalUse.ttf) format('ttf');
+}

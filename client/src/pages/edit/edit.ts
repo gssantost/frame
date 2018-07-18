@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { UsersProvider } from '../../providers/users/users';
 import { User, Urls as srv, MessageController } from '../../utils';
 import { PictureProvider } from '../../providers/picture/picture';
@@ -29,7 +29,7 @@ export class EditPage {
     private pictureService: PictureProvider, 
     private camera: Camera, 
     private msg: MessageController, 
-    private loadCtrl: LoadingController) {}
+    ) {}
 
   ionViewDidLoad() {
     this.getUserProfile()
@@ -42,11 +42,9 @@ export class EditPage {
   getUserProfile() {
     this.userService.getUserProfile().subscribe(data => {
       if (data.status === 200) {
-        const { profile_pic, ...rest } = data.data;
-        this.user = rest;
-        this.user.profile_pic = `${srv.STATIC_URL}/${profile_pic.split('\\uploads\\')[1]}`;
-        console.log(this.user.profile_pic);
-        console.log(this.user);
+        this.user = data.user;
+      } else {
+        this.msg.show('Error', data.error);
       }
     })
   }

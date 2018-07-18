@@ -1,13 +1,22 @@
 import helpers from '../helpers'
 
-const { db, queries } = helpers
+const { db, queries, config } = helpers
 
 /** GET: get all the user's posts */
 const get = (req, res) => {
   db.connect().then((obj) => {
     obj.any(queries.media['selectByUserId'], req.user.user_id)
       .then((data) => {
-        res.send({status: 200, data: data})
+
+        const mapped = data.map(post => {
+          const { media_url, ...rest } = post
+          return { 
+            ...rest, 
+            media_url: config.static + media_url.split('uploads')[1]
+          }
+        })
+
+        res.send({status: 200, data: mapped})
         obj.done()
       }).catch(e => {
         res.send({status: 404, error: e.message || e})
@@ -18,12 +27,17 @@ const get = (req, res) => {
   })
 }
 
-/** GET: get post full post by id */
+/** GET: get full post by id */
 const getById = (req, res) => {
   db.connect().then((obj) => {
     obj.one(queries.media['selectById'], req.params.mediaId)
       .then((data) => {
-        res.send({status: 200, data: data})
+          const { media_url, ...rest } = data
+          const fixedData = { 
+            ...rest, 
+            media_url: config.static + media_url.split('uploads')[1]
+          }
+        res.send({status: 200, data: fixedData})
         obj.done()
       }).catch(e => {
         res.send({status: 404, error: e.message || e})
@@ -40,7 +54,16 @@ const getByItems = (req, res) => {
   db.connect().then((obj) => {
     obj.any(queries.media['pagination'], [req.params.items, req.params.page])
       .then(data => {
-        res.send({status: 200, data: data})
+
+        const mapped = data.map(post => {
+          const { media_url, ...rest } = post
+          return { 
+            ...rest, 
+            media_url: config.static + media_url.split('uploads')[1]
+          }
+        })
+
+        res.send({status: 200, data: mapped})
         obj.done()
       }).catch(e => {
         res.send({status: 404, error: e.message || e})

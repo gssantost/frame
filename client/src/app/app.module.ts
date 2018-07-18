@@ -17,12 +17,16 @@ import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { PictureProvider } from '../providers/picture/picture';
 import { EditPage } from '../pages/edit/edit';
+import { PostsProvider } from '../providers/posts/posts';
+import { TokenProvider } from '../providers/token/token';
+import { PostDetailPage } from '../pages/post-detail/post-detail';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
-    EditPage
+    EditPage,
+    PostDetailPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ import { EditPage } from '../pages/edit/edit';
   entryComponents: [
     MyApp,
     LoginPage,
-    EditPage
+    EditPage,
+    PostDetailPage
   ],
   providers: [
     StatusBar,
@@ -49,6 +54,8 @@ import { EditPage } from '../pages/edit/edit';
     MessageController,
     UsersProvider,
     PictureProvider,
+    PostsProvider,
+    TokenProvider,
   ]
 })
 export class AppModule {}

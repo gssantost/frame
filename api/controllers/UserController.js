@@ -17,7 +17,12 @@ const getUser = (req, res) => {
   db.connect().then((obj) => {
     obj.one(queries.user['selectById'], user_id)
       .then((data) => {
-        res.send({status: 200, data})
+        const { profile_pic, ...rest } = data
+        const user = { 
+          ...rest,
+          profile_pic: config.static + profile_pic.split('uploads')[1]
+        }
+        res.send({status: 200, user})
         obj.done()
       })
       .catch((e) => {
@@ -111,28 +116,27 @@ const login = (req, res, next) => {
 /** POST: signUp */
 const signUp = (req, res) => {
   const { fullname, username, email, password } = req.body;
-  console.log(fullname + username + password + email)
+
   if ((fullname && username && email && password) != '') {
+    
     let passwordAsHash = bcrypt.hashSync(password.trim(), 10);
-    db.connect()
-      .then(obj => {
-        obj.any(queries.user['create'], [fullname.trim(), username.trim(), email.trim(), passwordAsHash])
-          .then((data) => {
-            console.log(data)
-            res.send({status: 200, message: 'Done!', data})
-            obj.done()
-          })
-          .catch((e) => {
-            console.log(e.message || e)
-            res.send({status: 500, error: e.message || e})
-            obj.done()
-          }
-        )
-      })
-      .catch((e) => {
-        console.log(e.message || e)
-        res.send({status: 500, error: e.message || e})
-      });
+    
+    db.task(async t => {
+      const userExists = await t.oneOrNone(queries.user['selectByUsername'], username);
+      if (userExists === null) {
+        return await t.any(queries.user['create'], [fullname.trim(), username.trim(), email.trim(), passwordAsHash])
+      }
+      return { message: 'Username already exists' };
+    }).then(data => {
+      if (data.user_id) {
+        res.send({status: 200, message: 'Done', data});
+      } else {
+        res.send({status: 200, message: data.message});
+      }
+    }).catch(e => {
+      res.send({status: 500, error: e.message || e});
+    })
+    
   } else {
     res.send({status: 400, error: 'Can´t process while there are empty fields'});
   } 

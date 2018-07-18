@@ -53,17 +53,59 @@
         <p><strong>Contact: </strong>{{user.email}}</p>
       </ion-col>
     </ion-row>
-
-    <!-- 
-      <ion-row>
-      <ion-col></ion-col>
-      <ion-col>
-        <button ion-button (click)="upload()">Upload</button>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-    -->
-
   </ion-grid>
   
+  <!-- Gallery Grid -->
+  <ion-segment [(ngModel)]="galleryType" color="primary" no-margin>
+    <ion-segment-button value="regular">
+      <ion-icon name="grid"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="frame">
+      <ion-icon name="list"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+  
+  <div [ngSwitch]="galleryType">
+    <ion-grid *ngSwitchCase="'regular'">
+      <ion-row>
+        <ion-col col-6 col-md-4 col-xl-3 *ngFor="let post of posts">
+            <img class="img-container" src="{{post.media_url}}" (click)="showDetail(post.media_id)">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    <ion-list *ngSwitchCase="'frame'">
+      <ion-card *ngFor="let post of posts">
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="{{user.profile_pic}}">
+          </ion-avatar>
+          <h2>{{user.username}}</h2>
+          <p><small>{{post.created_at}}</small></p>
+        </ion-item>
+
+        <img class="img-container" src="{{post.media_url}}">
+        
+        <ion-row>
+          <ion-col col-1>
+            <button ion-button icon-start clear small>
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div></div>
+            </button>
+          </ion-col>
+          <ion-col col-1>
+            <button ion-button icon-start clear small>
+              <ion-icon name="text"></ion-icon>
+              <div></div>
+            </button>
+          </ion-col>
+        </ion-row>
+
+        <ion-card-content>
+          <p><small>{{post.media_des}}</small></p>
+        </ion-card-content>
+      </ion-card>
+  </ion-list>
+</div>
+
 </ion-content>

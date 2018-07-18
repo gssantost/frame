@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Credentials, Urls as srv, User } from '../../utils';
-import { Storage } from '@ionic/storage';
+import { TokenProvider } from '../token/token';
 
 /*
   Generated class for the AuthenticationProvider provider.
@@ -13,25 +13,14 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class UsersProvider {
 
-  private token: string;
-
-  constructor(private http: HttpClient, private storage: Storage) {}
-
-  setToken(token: string) {
-    this.storage.set('token', token)
-      .then(() => this.token = token, 
-      (err) => console.log(err)
-    );
-  }
+  constructor(private http: HttpClient, private tokenService: TokenProvider) {}
 
   getToken(): string {
-    if (!this.token) {
-      this.storage.get('token')
-        .then((t) => this.token = t, 
-        (err) => console.log(JSON.stringify(err))
-      );
-    }
-    return this.token;
+    return this.tokenService.getToken();
+  }
+  
+  setToken(token: string) {
+    return this.tokenService.setToken(token);
   }
 
   register(user: Credentials): Observable<any> {
@@ -45,7 +34,7 @@ export class UsersProvider {
   putUserProfile(user: User): Observable<any> {
     return this.http.put(`${srv.BASE_URL}/users/`, user, {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`
+        Authorization: `Bearer ${this.tokenService.getToken()}`
       }
     })
   }
@@ -53,13 +42,13 @@ export class UsersProvider {
   getUserProfile(): Observable<any> {
     return this.http.get(`${srv.BASE_URL}/users/`, { 
       headers: {
-        Authorization: `Bearer ${this.getToken()}` 
+        Authorization: `Bearer ${this.tokenService.getToken()}` 
       }
     })
   }
 
   logout() {
-    this.token = '';
+    this.tokenService.setToken('');
   }
 
 }
