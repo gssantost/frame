@@ -31,6 +31,22 @@ export class UsersProvider {
     return this.http.post(`${srv.BASE_URL}/users/login`, user);
   }
 
+  getUserProfile(): Observable<any> {
+    return this.http.get(`${srv.BASE_URL}/users/`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
+  }
+
+  getUserProfileById(id): Observable<any> {
+    return this.http.get(`${srv.BASE_URL}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
+  }
+
   putUserProfile(user: User): Observable<any> {
     return this.http.put(`${srv.BASE_URL}/users/`, user, {
       headers: {
@@ -39,16 +55,9 @@ export class UsersProvider {
     })
   }
 
-  getUserProfile(): Observable<any> {
-    return this.http.get(`${srv.BASE_URL}/users/`, { 
-      headers: {
-        Authorization: `Bearer ${this.tokenService.getToken()}` 
-      }
-    })
-  }
-
   logout() {
     this.tokenService.setToken('');
+    this.tokenService.clear();
   }
 
 }

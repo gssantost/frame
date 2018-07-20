@@ -1,12 +1,16 @@
 import { Injectable } from "@angular/core";
-import { AlertController, LoadingController, Loading } from "ionic-angular";
+import { AlertController, LoadingController, Loading, ToastController } from "ionic-angular";
 
 @Injectable()
 export class MessageController {
 
   loader: Loading;
 
-  constructor(private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(
+    private alertCtrl: AlertController, 
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
+  ) {}
 
   show(title, text, cb?) {
     let alert = this.alertCtrl.create({
@@ -20,6 +24,15 @@ export class MessageController {
       ]
     });
     alert.present();
+  }
+
+  toast(text, position?, duration?, cb?) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      position: position || "bottom",
+      duration: duration || 2000
+    });
+    toast.present();
   }
 
   load(loadingMessage?: string) {

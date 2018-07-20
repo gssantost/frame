@@ -5,15 +5,33 @@ import bcrypt from 'bcryptjs'
 
 const { db, queries, config } = helpers
 
-/** GET: UserId from JWToken */
-const getUserId = (req, res) => {
-    res.send({status: 200, data: req.user})
+/** GET:  */
+const getByUserId = (req, res) => {
+  db.connect().then((obj) => {
+    obj.one(queries.user['selectById'], req.params.userId)
+      .then((data) => {
+        const { profile_pic, ...rest } = data
+        const user = { 
+          ...rest,
+          profile_pic: config.static + profile_pic.split('uploads')[1]
+        }
+        res.send({status: 200, user})
+        obj.done()
+        next(data)
+      })
+      .catch((e) => {
+        res.send({status: 402, error: e.message || e})
+        obj.done()
+      })
+  }).catch((e) => {
+    res.send({status: 500, error: e.message || e})
+  })
 }
 
 /** GET: all User data from DB (no password returned to client app, of course...) */
 const getUser = (req, res) => {
   const { user_id } = req.user
-
+  console.log(user_id)
   db.connect().then((obj) => {
     obj.one(queries.user['selectById'], user_id)
       .then((data) => {
@@ -142,4 +160,4 @@ const signUp = (req, res) => {
   } 
 }
 
-export default { getUserId, getUser, postPicture, putUser, login, signUp }
+export default { getByUserId, getUser, postPicture, putUser, login, signUp }

@@ -5,6 +5,7 @@ import profileUpload from '../middlewares/profileUpload';
 const router = express.Router();
 
 router.get('/', UserController.getUser);
+router.get('/:userId', UserController.getByUserId);
 router.put('/', UserController.putUser);
 router.post('/', profileUpload, UserController.postPicture);
 router.post('/login', UserController.login);

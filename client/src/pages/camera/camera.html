@@ -13,6 +13,30 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding id="ion-content">
+
+  <img center src="{{pathForImage()}}" style="width: 100%" *ngIf="selected">
+  <ion-item center>
+      <ion-label stacked>Write about your post!</ion-label>
+      <ion-textarea name="description" [(ngModel)]="description" max="150"></ion-textarea>
+  </ion-item>
+  
+  <ion-fab left bottom>
+      <button ion-fab color="secondary" (click)="changeEffect()">
+          <ion-icon name="md-color-wand"></ion-icon>
+      </button>
+  </ion-fab>
+  
+  <ion-fab center bottom>
+      <button ion-fab color="primary" (click)="takePicture()">
+          <ion-icon name="md-camera"></ion-icon>
+      </button>
+  </ion-fab>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="send()">
+      <ion-icon name="cloud-upload"></ion-icon>
+    </button>
+  </ion-fab>
 
 </ion-content>

@@ -17,13 +17,11 @@
   <ion-card>
     
     <ion-item>
-      <!-- <ion-avatar item-start>
-        <img src="{{post.profile_pic}}" (click)="showDetail(post.media_id)">
+      <ion-avatar item-start>
+        <img src="{{post.profile_pic}}">
       </ion-avatar>
-      <h2>{{user.username}}</h2> -->
-      <p>
-        <small>{{post.created_at}}</small>
-      </p>
+      <h2>{{post.username}}</h2>
+      <p><small>{{post.created_at | amDateFormat:'LL'}}</small></p>
     </ion-item>
 
     <img class="img-container" src="{{post.media_url}}">

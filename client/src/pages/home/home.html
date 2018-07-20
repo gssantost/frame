@@ -26,11 +26,11 @@
 <ion-content padding>
   <ion-card *ngFor="let post of posts">
     <ion-item>
-      <!-- <ion-avatar item-start>
-        <img src="{{user.profile_pic}}">
+      <ion-avatar item-start>
+        <img src="{{post.profile_pic}}">
       </ion-avatar>
-      <h2>{{user.username}}</h2> -->
-      <p><small>{{post.created_at}}</small></p>
+      <h2>{{post.username}}</h2>
+      <p><small>{{post.created_at | amDateFormat:'LL'}}</small></p>
     </ion-item>
 
     <img class="img-container" src="{{post.media_url}}">

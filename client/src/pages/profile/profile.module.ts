@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { MomentModule } from 'ngx-moment';
 import { ProfilePage } from './profile';
 
 @NgModule({
@@ -7,6 +8,7 @@ import { ProfilePage } from './profile';
     ProfilePage,
   ],
   imports: [
+    MomentModule,
     IonicPageModule.forChild(ProfilePage),
   ],
 })

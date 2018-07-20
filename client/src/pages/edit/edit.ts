@@ -31,10 +31,6 @@ export class EditPage {
     private msg: MessageController, 
     ) {}
 
-  ionViewDidLoad() {
-    this.getUserProfile()
-  }
-
   ionViewDidEnter() {
     this.getUserProfile()
   }

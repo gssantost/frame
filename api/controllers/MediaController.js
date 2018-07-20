@@ -4,8 +4,10 @@ const { db, queries, config } = helpers
 
 /** GET: get all the user's posts */
 const get = (req, res) => {
+  const { user_id } = req.user
+  console.log(user_id)
   db.connect().then((obj) => {
-    obj.any(queries.media['selectByUserId'], req.user.user_id)
+    obj.any(queries.media['selectByUserId'], user_id)
       .then((data) => {
 
         const mapped = data.map(post => {
@@ -27,15 +29,42 @@ const get = (req, res) => {
   })
 }
 
+/** GET: get all the user's posts BY id in param */
+const getThisPosts = (req, res) => {
+  db.connect().then((obj) => {
+    obj.any(queries.media['selectByUserId'], req.params.userId)
+      .then((data) => {
+
+        const mapped = data.map(post => {
+          const { media_url, ...rest } = post
+          return { 
+            ...rest, 
+            media_url: config.static + media_url.split('uploads')[1]
+          }
+        })
+
+        res.send({status: 200, data: mapped})
+        obj.done()
+      }).catch(e => {
+        res.send({status: 404, error: e.message || e})
+        obj.done()
+      })
+  }).catch(e => {
+    res.send({status: 500, error: e.message || e})
+  })
+}
+
+
 /** GET: get full post by id */
 const getById = (req, res) => {
   db.connect().then((obj) => {
     obj.one(queries.media['selectById'], req.params.mediaId)
       .then((data) => {
-          const { media_url, ...rest } = data
+          const { media_url, profile_pic, ...rest } = data
           const fixedData = { 
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1]
+            media_url: config.static + media_url.split('uploads')[1],
+            profile_pic: config.static + profile_pic.split('uploads')[1]
           }
         res.send({status: 200, data: fixedData})
         obj.done()
@@ -56,10 +85,11 @@ const getByItems = (req, res) => {
       .then(data => {
 
         const mapped = data.map(post => {
-          const { media_url, ...rest } = post
-          return { 
+          const { media_url, profile_pic, ...rest } = post
+          return {
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1]
+            media_url: config.static + media_url.split('uploads')[1], 
+            profile_pic: config.static + profile_pic.split('uploads')[1]
           }
         })
 
@@ -83,6 +113,7 @@ const post = (req, res) => {
 
   const { body: { description }, file: { path }, user } = req
   console.log(req.body)
+  console.log(user.user_id)
 
   db.connect().then((obj) => {
     obj.none(queries.media['create'], [description, path, user.user_id])
@@ -134,4 +165,4 @@ const deleteById = (req, res) => {
   })
 }
 
-export default { get, getById, getByItems, post, put, deleteById }
+export default { get, getById, getByItems, getThisPosts, post, put, deleteById }

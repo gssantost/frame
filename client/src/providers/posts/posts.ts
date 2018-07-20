@@ -13,24 +13,46 @@ import { TokenProvider } from '../token/token';
 @Injectable()
 export class PostsProvider {
 
-  defaults: any; 
-
-  constructor(public http: HttpClient, private tokenService: TokenProvider) {
-    this.defaults = {
-      Authorization: `Bearer ${this.tokenService.getToken()}`
-    }
-  }
+  constructor(public http: HttpClient, private tokenService: TokenProvider) {}
 
   public getUserPosts(): Observable<any> {
-    return this.http.get(`${srv.BASE_URL}/posts/`, { headers: { ...this.defaults } })
+    return this.http.get(`${srv.BASE_URL}/posts/`, { 
+      headers: { 
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      } 
+    })
   }
 
   public getPostDetail(id): Observable<any> {
-    return this.http.get(`${srv.BASE_URL}/posts/${id}`, { headers: { ...this.defaults } })
+    return this.http.get(`${srv.BASE_URL}/posts/${id}`, {
+      headers: { 
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      } 
+    })
+  }
+
+  public getPostsByUser(id): Observable<any> {
+    return this.http.get(`${srv.BASE_URL}/posts/${id}/all`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
   }
 
   public getPosts(limit, page): Observable<any> {
-    return this.http.get(`${srv.BASE_URL}/posts/${limit}/${page}`, { headers: { ...this.defaults } })
+    return this.http.get(`${srv.BASE_URL}/posts/${limit}/${page}`, { 
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}` 
+      } 
+    })
+  }
+
+  public doPost(): Observable<any> {
+    return this.http.post(`${srv.BASE_URL}/posts/`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
   }
 
 }

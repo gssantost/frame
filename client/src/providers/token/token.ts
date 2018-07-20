@@ -19,19 +19,28 @@ export class TokenProvider {
 
   setToken(token: string) {
     this.storage.set('token', token)
-      .then(() => this.token = token,
-        (err) => console.log(err)
-      );
+    .then(
+      () => this.token = token,
+      (e) => console.log(JSON.stringify(e))
+    );
   }
 
   getToken(): string {
     if (!this.token) {
       this.storage.get('token')
-        .then((t) => this.token = t,
-          (err) => console.log(JSON.stringify(err))
-        );
+      .then(
+        (t) => this.token = t,
+        (e) => console.log(JSON.stringify(e))
+      );
     }
     return this.token;
+  }
+
+  clear() {
+    this.storage.clear()
+    .then(() => console.log('Token store cleared.'),
+      (e) => console.log(e)
+    )
   }
 
 }

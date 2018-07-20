@@ -30,8 +30,11 @@ export class PictureProvider {
     const options = {
       quality: 100,
       sourceType: sourceType,
-      saveToPhotoAlbum: false,
-      correctOrientation: true
+      saveToPhotoAlbum: true,
+      targetWidth: 400,
+      targetHeight: 400,
+      correctOrientation: true,
+      allowEdit: true,
     }
 
     this.camera.getPicture(options)
@@ -80,14 +83,24 @@ export class PictureProvider {
       };
 
       fileTransfer.upload(targetPath, url, configs).then(
-        (data) => res(data), 
-        (error) => rej(error)
+        (data) => {
+          this.setPicture('');
+          res(data)
+        }, 
+        (error) => {
+          this.setPicture('');
+          rej(error)
+        }
       );
     });
   }
 
   getPicture(): string {
     return this.picture;
+  }
+
+  setPicture(pic: string) {
+    this.picture = pic;
   }
 
   private saveToDir(namePath, currentName) {

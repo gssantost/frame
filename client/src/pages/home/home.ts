@@ -4,6 +4,7 @@ import { UsersProvider } from '../../providers/users/users';
 import { LoginPage } from '../../pages/login/login'
 import { MessageController } from '../../utils';
 import { PostsProvider } from '../../providers/posts/posts';
+import { MomentModule } from 'ngx-moment';
 
 /**
  * Generated class for the HomePage page.
@@ -22,6 +23,7 @@ export class HomePage {
   pageCounter: number;
   limit: number;
   posts: any;
+  cache: any = [];
 
   constructor(
     public navCtrl: NavController, 
@@ -57,25 +59,24 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
-    this.postsService.getPosts(this.limit, this.pageCounter)
-      .subscribe((data) => {
-        if (data.status === 200) {
-          if (data.data.length === 0) {
-            this.msg.show('Ups!', 'No more posts...');
-            return;
-          } else {
-            let newPosts = data.data
-            for (let i = 0; i < newPosts.length; i++) {
-              this.posts.push(newPosts[i])
+    if (this.cache.length < this.limit) {
+      this.postsService.getPosts(this.limit, this.pageCounter)
+        .subscribe((data) => {
+          if (data.status === 200) {
+            this.cache = data.data
+            for (let i = 0; i < this.cache.length; i++) {
+              this.posts.push(this.cache[i])
             }
             this.pageCounter++
+          } else {
+            this.msg.show('Error', data.error);
           }
-        } else {
-          this.msg.show('Error', data.error);
-        }
-
-        infiniteScroll.complete()
-      })
+          infiniteScroll.complete()
+        })
+    } else {
+      this.msg.toast('No more posts...');
+      infiniteScroll.complete();
+    }
   }
 
 }

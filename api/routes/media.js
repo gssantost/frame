@@ -6,6 +6,7 @@ let router = express.Router();
 
 router.get('/', MediaController.get)
 router.get('/:mediaId', MediaController.getById)
+router.get('/:userId/all', MediaController.getThisPosts)
 router.get('/:items/:page', MediaController.getByItems)
 router.post('/', postsUpload, MediaController.post)
 router.put('/', MediaController.put)

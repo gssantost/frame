@@ -5,21 +5,26 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { LoginPage } from '../pages/login/login';
-import { UsersProvider } from '../providers/users/users';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
-import { MessageController } from '../utils';
+import { MomentModule } from 'ngx-moment';
+
+import { UsersProvider } from '../providers/users/users';
+import { PictureProvider } from '../providers/picture/picture';
+import { PostsProvider } from '../providers/posts/posts';
+import { TokenProvider } from '../providers/token/token';
+
 
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { FilePath } from '@ionic-native/file-path'
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
-import { PictureProvider } from '../providers/picture/picture';
+import { CameraPreview } from '@ionic-native/camera-preview';
+import { LoginPage } from '../pages/login/login';
 import { EditPage } from '../pages/edit/edit';
-import { PostsProvider } from '../providers/posts/posts';
-import { TokenProvider } from '../providers/token/token';
 import { PostDetailPage } from '../pages/post-detail/post-detail';
+import { MessageController } from '../utils';
 
 @NgModule({
   declarations: [
@@ -31,6 +36,7 @@ import { PostDetailPage } from '../pages/post-detail/post-detail';
   imports: [
     BrowserModule,
     HttpClientModule,
+    MomentModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -50,7 +56,9 @@ import { PostDetailPage } from '../pages/post-detail/post-detail';
     FileTransferObject,
     File,
     FilePath,
+    Diagnostic,
     Camera,
+    CameraPreview,
     MessageController,
     UsersProvider,
     PictureProvider,

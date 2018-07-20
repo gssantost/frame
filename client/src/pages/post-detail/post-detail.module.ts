@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { MomentModule } from 'ngx-moment';
 import { PostDetailPage } from './post-detail';
 
 @NgModule({
@@ -7,6 +8,7 @@ import { PostDetailPage } from './post-detail';
     PostDetailPage,
   ],
   imports: [
+    MomentModule,
     IonicPageModule.forChild(PostDetailPage),
   ],
 })
