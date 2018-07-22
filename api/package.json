@@ -25,7 +25,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "nodemon ./api/index.js --exec babel-node --trace-warnings"
+    "run": "nodemon ./index.js --exec babel-node --trace-warnings"
   },
   "author": "",
   "license": "ISC"
