@@ -4,7 +4,7 @@ import { UsersProvider } from '../../providers/users/users';
 import { LoginPage } from '../../pages/login/login'
 import { MessageController } from '../../utils';
 import { PostsProvider } from '../../providers/posts/posts';
-import { MomentModule } from 'ngx-moment';
+import { ProfilePage } from '../profile/profile';
 
 /**
  * Generated class for the HomePage page.
@@ -24,6 +24,7 @@ export class HomePage {
   limit: number;
   posts: any;
   cache: any = [];
+  more: boolean;
 
   constructor(
     public navCtrl: NavController, 
@@ -35,22 +36,33 @@ export class HomePage {
   ) {
     this.pageCounter = 1;
     this.limit = 2;
+    this.more = true;
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.postsService.getPosts(this.limit, this.pageCounter)
       .subscribe((data) => {
         if (data.status === 200) {
-          this.posts = data.data;
+          this.cache = data.data;
+          this.posts = this.cache;
         } else {
           this.msg.show('Error', data.error);
         }
       })
-    this.pageCounter++;
+    this.pageCounter++
+  }
+
+  ionViewDidLeave() {
+    this.pageCounter = 1;
+    this.more = true;
   }
 
   search() {
     this.msg.show('Ups!', 'Page in development...')
+  }
+
+  showProfile(id) {
+    this.navCtrl.push(ProfilePage, { userId: id })
   }
 
   logout() {
@@ -59,7 +71,7 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
-    if (this.cache.length < this.limit) {
+    if (!(this.cache.length < this.limit)) {
       this.postsService.getPosts(this.limit, this.pageCounter)
         .subscribe((data) => {
           if (data.status === 200) {
@@ -75,6 +87,7 @@ export class HomePage {
         })
     } else {
       this.msg.toast('No more posts...');
+      this.more = false;
       infiniteScroll.complete();
     }
   }

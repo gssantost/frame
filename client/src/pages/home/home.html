@@ -24,38 +24,10 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let post of posts">
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="{{post.profile_pic}}">
-      </ion-avatar>
-      <h2>{{post.username}}</h2>
-      <p><small>{{post.created_at | amDateFormat:'LL'}}</small></p>
-    </ion-item>
+  
+  <post *ngFor="let post of posts" [props]="post" (navigate)="showProfile($event)"></post>
 
-    <img class="img-container" src="{{post.media_url}}">
-        
-    <ion-row>
-      <ion-col col-1>
-        <button ion-button icon-start clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div></div>
-        </button>
-      </ion-col>
-      <ion-col col-1>
-        <button ion-button icon-start clear small>
-          <ion-icon name="text"></ion-icon>
-          <div></div>
-        </button>
-      </ion-col>
-        </ion-row>
-
-    <ion-card-content>
-      <p><small>{{post.media_des}}</small></p>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll *ngIf="more" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content 
       loadingSpinner="bubbles" 
       loadingText="Loading more posts...">

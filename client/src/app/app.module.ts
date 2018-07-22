@@ -14,29 +14,35 @@ import { PictureProvider } from '../providers/picture/picture';
 import { PostsProvider } from '../providers/posts/posts';
 import { TokenProvider } from '../providers/token/token';
 
-
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { FilePath } from '@ionic-native/file-path'
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { CameraPreview } from '@ionic-native/camera-preview';
+
+import { ComponentsModule } from '../components/components.module';
+import { ProfilePageModule } from '../pages/profile/profile.module';
+import { PostDetailPageModule } from '../pages/post-detail/post-detail.module';
+import { EditPageModule } from '../pages/edit/edit.module';
+import { LoginPageModule } from '../pages/login/login.module';
 import { LoginPage } from '../pages/login/login';
-import { EditPage } from '../pages/edit/edit';
-import { PostDetailPage } from '../pages/post-detail/post-detail';
 import { MessageController } from '../utils';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
-    EditPage,
-    PostDetailPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     MomentModule,
+    ComponentsModule,
+    ProfilePageModule,
+    PostDetailPageModule,
+    EditPageModule,
+    LoginPageModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -44,8 +50,6 @@ import { MessageController } from '../utils';
   entryComponents: [
     MyApp,
     LoginPage,
-    EditPage,
-    PostDetailPage
   ],
   providers: [
     StatusBar,

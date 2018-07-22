@@ -41,8 +41,11 @@
         </table>
         <ion-row>
           <ion-col style="text-align: center">
-            <button ion-button outline color="dark" small (click)="edit()">
+            <button ion-button outline color="dark" small (click)="edit()" [hidden]="guest">
               Edit profile
+            </button>
+            <button ion-button outline color="dark" small [hidden]="!guest">
+              Follow
             </button>
           </ion-col>
         </ion-row>
@@ -75,36 +78,9 @@
     </ion-grid>
     
     <ion-list *ngSwitchCase="'frame'">
-      <ion-card *ngFor="let post of posts">
-        <ion-item>
-          <ion-avatar item-start>
-            <img src="{{user.profile_pic}}">
-          </ion-avatar>
-          <h2>{{user.username}}</h2>
-          <p><small>{{post.created_at | amDateFormat:'LL'}}</small></p>
-        </ion-item>
-
-        <img class="img-container" src="{{post.media_url}}">
-        
-        <ion-row>
-          <ion-col col-1>
-            <button ion-button icon-start clear small>
-              <ion-icon name="thumbs-up"></ion-icon>
-              <div></div>
-            </button>
-          </ion-col>
-          <ion-col col-1>
-            <button ion-button icon-start clear small>
-              <ion-icon name="text"></ion-icon>
-              <div></div>
-            </button>
-          </ion-col>
-        </ion-row>
-
-        <ion-card-content>
-          <p><small>{{post.media_des}}</small></p>
-        </ion-card-content>
-      </ion-card>
+      <post *ngFor="let post of posts" 
+            [username]="user.username" [profile]="user.profile_pic" [props]="post">
+      </post>
   </ion-list>
 </div>
 

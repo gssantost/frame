@@ -146,8 +146,8 @@ const signUp = (req, res) => {
       }
       return { message: 'Username already exists' };
     }).then(data => {
-      if (data.user_id) {
-        res.send({status: 200, message: 'Done', data});
+      if (data[0].user_id) {
+        res.send({status: 200, message: 'Done'});
       } else {
         res.send({status: 200, message: data.message});
       }

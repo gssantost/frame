@@ -25,6 +25,7 @@ export class ProfilePage {
   user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
   posts: any;
   galleryType: string = 'regular';
+  guest: boolean;
 
   constructor(
     public navCtrl: NavController, 
@@ -37,8 +38,27 @@ export class ProfilePage {
 
   
   ionViewDidEnter() {
-    this.getUserProfile()
-    this.getUserPosts()
+    let userId = this.navParams.get('userId');
+    if (userId) {
+      this.getUserProfileById(userId);
+      this.getPostsById(userId);
+      this.guest = true;
+    } else {
+      this.getUserProfile();
+      this.getUserPosts();
+      this.guest = false;
+    }
+  }
+
+  getUserProfileById(id) {
+    this.userService.getUserProfileById(id).subscribe(data => {
+      if (data.status === 200) {
+        this.user = data.user;
+        console.log(this.user)
+      } else {
+        this.msg.show('Error', data.message);
+      }
+    })
   }
 
   getUserProfile() {
@@ -47,7 +67,7 @@ export class ProfilePage {
         this.user = data.user;
         console.log(this.user)
       } else {
-        this.msg.show('Error', data.error);
+        this.msg.show('Error', data.message);
       }
     })
   }
@@ -58,7 +78,18 @@ export class ProfilePage {
         this.posts = data.data;
         console.log(this.posts)
       } else {
-        this.msg.show('Ups!', data.error);
+        this.msg.show('Ups!', data.message);
+      }
+    })
+  }
+
+  getPostsById(id) {
+    this.postsService.getPostsByUser(id).subscribe(data => {
+      if (data.status === 200) {
+        this.posts = data.data;
+        console.log(this.posts)
+      } else {
+        this.msg.show('Ups!', data.message);
       }
     })
   }

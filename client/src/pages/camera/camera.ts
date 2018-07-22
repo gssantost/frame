@@ -67,6 +67,7 @@ export class CameraPage {
   send() {
     if ((this.pictureService.getPicture() && this.description) !== '') {
       this.upload();
+      this.navCtrl.pop();
     } else {
       this.msg.toast('Error', 'No post!')
     }
@@ -89,14 +90,14 @@ export class CameraPage {
       .then((data) => {
         console.log(JSON.stringify(data) + " Uploaded Successfully");
         this.msg.dismiss();
-        this.msg.show('Success', JSON.stringify(data.response));
+        this.msg.show('Success', data.response);
         this.description = '';
         this.navCtrl.pop();
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
         this.msg.dismiss();
-        this.msg.show('Error', JSON.stringify(err));
+        this.msg.show('Error', err.message);
       })
   }
 

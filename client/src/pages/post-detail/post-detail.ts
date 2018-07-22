@@ -27,12 +27,7 @@ export class PostDetailPage {
   ) {
     this.post = {};
   }
-
-  ionViewDidLoad() {
-    console.log(this.navParams.get('mediaId'))
-    this.suscribeDetail()
-  }
-
+  
   ionViewDidEnter() {
     console.log(this.navParams.get('mediaId'))
     this.suscribeDetail()

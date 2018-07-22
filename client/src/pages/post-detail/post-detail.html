@@ -14,39 +14,5 @@
 
 
 <ion-content padding>
-  <ion-card>
-    
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="{{post.profile_pic}}">
-      </ion-avatar>
-      <h2>{{post.username}}</h2>
-      <p><small>{{post.created_at | amDateFormat:'LL'}}</small></p>
-    </ion-item>
-
-    <img class="img-container" src="{{post.media_url}}">
-
-    <ion-row>
-      <ion-col col-1>
-        <button ion-button icon-start clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div></div>
-        </button>
-      </ion-col>
-      <ion-col col-1>
-        <button ion-button icon-start clear small>
-          <ion-icon name="text"></ion-icon>
-          <div></div>
-        </button>
-      </ion-col>
-    </ion-row>
-
-    <ion-card-content>
-      <p>
-        <small>{{post.media_des}}</small>
-      </p>
-    </ion-card-content>
-
-  </ion-card>
-  
+  <post [props]="post"></post>
 </ion-content>
