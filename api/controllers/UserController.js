@@ -13,7 +13,7 @@ const getByUserId = (req, res) => {
         const { profile_pic, ...rest } = data
         const user = { 
           ...rest,
-          profile_pic: config.static + profile_pic.split('uploads')[1]
+          profile_pic: config.static + profile_pic
         }
         res.send({status: 200, user})
         obj.done()
@@ -38,7 +38,7 @@ const getUser = (req, res) => {
         const { profile_pic, ...rest } = data
         const user = { 
           ...rest,
-          profile_pic: config.static + profile_pic.split('uploads')[1]
+          profile_pic: config.static + profile_pic
         }
         res.send({status: 200, user})
         obj.done()

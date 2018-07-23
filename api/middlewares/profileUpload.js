@@ -6,11 +6,15 @@ const { config } = helpers
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let dest = config.baseDir + '/uploads/' + req.user.user_id + '/';
+    let dest = 'uploads/' + req.user.user_id + '/';
     mkdirp.sync(dest)
     cb(null, dest)
   },
   filename: (req, file, cb) => {
+    let rexp = /^.|,|;/
+    if (file.originalname.match(rexp)) {
+      file.originalname.replace(rexp, '');
+    }
     cb(null, file.originalname)
   }
 })

@@ -7,7 +7,7 @@
     <h2 (click)="handleUsernameClick(props.user_id)">{{username || props.username}}</h2>
     <p>
       <small>
-        {{props.created_at | amDateFormat:'LL'}}
+        {{props.created_at | amDateFormat:'LL' | amTimeAgo}}
       </small>
   </p>
   </ion-item>

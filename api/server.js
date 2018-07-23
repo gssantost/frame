@@ -8,7 +8,7 @@ import Routes from './routes'
 const { config, Strategies } = helpers
 const app = express();
 
-app.use('/static', express.static(__dirname + '/uploads'))
+app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(jwt({

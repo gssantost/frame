@@ -14,7 +14,7 @@ const get = (req, res) => {
           const { media_url, ...rest } = post
           return { 
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1]
+            media_url: config.static + media_url
           }
         })
 
@@ -39,7 +39,7 @@ const getThisPosts = (req, res) => {
           const { media_url, ...rest } = post
           return { 
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1]
+            media_url: config.static + media_url
           }
         })
 
@@ -63,8 +63,8 @@ const getById = (req, res) => {
           const { media_url, profile_pic, ...rest } = data
           const fixedData = { 
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1],
-            profile_pic: config.static + profile_pic.split('uploads')[1]
+            media_url: config.static + media_url,
+            profile_pic: config.static + profile_pic
           }
         res.send({status: 200, data: fixedData})
         obj.done()
@@ -88,8 +88,8 @@ const getByItems = (req, res) => {
           const { media_url, profile_pic, ...rest } = post
           return {
             ...rest, 
-            media_url: config.static + media_url.split('uploads')[1], 
-            profile_pic: config.static + profile_pic.split('uploads')[1]
+            media_url: config.static + media_url, 
+            profile_pic: config.static + profile_pic
           }
         })
 
