@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PostsProvider } from '../../providers/posts/posts';
 import { MessageController } from '../../utils';
+import { CommentViewPage } from '../comment-view/comment-view';
 
 /**
  * Generated class for the PostDetailPage page.
@@ -30,10 +31,10 @@ export class PostDetailPage {
   
   ionViewDidEnter() {
     console.log(this.navParams.get('mediaId'))
-    this.suscribeDetail()
+    this.getPostDetail()
   }
 
-  suscribeDetail() {
+  getPostDetail() {
     return this.postsService.getPostDetail(this.navParams.get('mediaId'))
       .subscribe((data) => {
         if (data.status === 200) {
@@ -42,7 +43,13 @@ export class PostDetailPage {
         } else {
           this.msg.show('Error', data.error);
         }
-      })
+      }
+    );
   }
+
+  showComment(id) {
+    this.navCtrl.push(CommentViewPage, { mediaId: id });
+  }
+
 
 }

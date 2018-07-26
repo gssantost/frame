@@ -23,9 +23,11 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   
-  <post *ngFor="let post of posts" [props]="post" (navigate)="showProfile($event)"></post>
+  <post *ngFor="let post of posts" [props]="post" (onProfile)="showProfile($event)"
+        (onComment)="showComments($event)">
+  </post>
 
   <ion-infinite-scroll *ngIf="more" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content 

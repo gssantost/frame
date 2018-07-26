@@ -1,0 +1,19 @@
+<!-- Generated template for the CommentComponent component -->
+<ion-item no-padding>
+  <ion-avatar item-start>
+    <img src="{{props.profile_pic}}">
+  </ion-avatar>
+  <p text-wrap>
+    <strong>{{ props.username }}</strong> 
+    {{ props.comment_text }}
+  </p>
+  <p>
+    <small>{{ props.created_at | amTimeAgo }}</small>
+    <small *ngIf="props.allow" (click)="delete()" margin-left=2 class="options" float-end>
+      <strong>Eliminar</strong>
+    </small>
+    <small *ngIf="props.allow" (click)="update()" class="options" float-end>
+      <strong>Modificar</strong>
+    </small>
+  </p>
+</ion-item>

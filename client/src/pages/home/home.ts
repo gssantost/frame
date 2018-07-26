@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { UsersProvider } from '../../providers/users/users';
-import { LoginPage } from '../../pages/login/login'
+import { LoginPage } from '../login/login'
 import { MessageController } from '../../utils';
 import { PostsProvider } from '../../providers/posts/posts';
 import { ProfilePage } from '../profile/profile';
+import { CommentViewPage } from '../comment-view/comment-view';
+
 
 /**
  * Generated class for the HomePage page.
@@ -63,6 +65,10 @@ export class HomePage {
 
   showProfile(id) {
     this.navCtrl.push(ProfilePage, { userId: id })
+  }
+
+  showComments(id) {
+    this.navCtrl.push(CommentViewPage, { mediaId: id })
   }
 
   logout() {

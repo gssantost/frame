@@ -21,44 +21,9 @@
 
 <ion-content padding>
   
-  <ion-grid>
-    <ion-row>
-      <ion-col col-4>
-        <img src={{user.profile_pic}}>
-      </ion-col>
-      <ion-col col-8 padding-left>
-        <table>
-          <tr>
-            <th padding-bottom padding-right padding-left>0</th>
-            <th padding-bottom padding-right>0</th>
-            <th padding-bottom padding-right>0</th>
-          </tr>
-          <tr>
-            <th padding-right padding-left>posts</th>
-            <th padding-right>followers</th>
-            <th padding-right>following</th>
-          </tr>
-        </table>
-        <ion-row>
-          <ion-col style="text-align: center">
-            <button ion-button outline color="dark" small (click)="edit()" [hidden]="guest">
-              Edit profile
-            </button>
-            <button ion-button outline color="dark" small [hidden]="!guest">
-              Follow
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <ion-col>
-        <p><strong>{{user.fullname}}</strong></p>
-        <p>{{user.bio}}</p>
-        <p><strong>Contact: </strong>{{user.email}}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <headline [props]="user" [editable]="editable" (navigate)="edit($event)" (follow)="doFollow($event)">
+  </headline>
   
-  <!-- Gallery Grid -->
   <ion-segment [(ngModel)]="galleryType" color="primary" no-margin>
     <ion-segment-button value="regular">
       <ion-icon name="grid"></ion-icon>

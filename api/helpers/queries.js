@@ -1,7 +1,7 @@
 const queries = {
   user: {
     create: 'INSERT INTO public.app_user (fullname, username, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id',
-    selectById: 'SELECT fullname, username, email, bio, profile_pic FROM public.app_user WHERE user_id=$1',
+    selectById: 'SELECT user_id, fullname, username, email, bio, profile_pic FROM public.app_user WHERE user_id=$1',
     selectByUsername: 'SELECT user_id, password FROM public.app_user WHERE username = $1',
     getTypeUser: 'SELECT * FROM public.type_user WHERE type_id=(SELECT type_id FROM public.app_user WHERE user_id=$1)',
     selectUsers: 'SELECT * FROM public.app_user',
@@ -30,10 +30,11 @@ const queries = {
     delete: 'DELETE FROM public.follow WHERE follow_id=$1 AND user_id=$2'
   },
   comments: {
-    create: 'INSERT INTO public.comments (comment_text, media_id, user_id) VALUES ($1, $2, $3)',
-    update: 'UPDATE public.comments SET comment_text=$1, created_at=NOW() WHERE comment_id=$2 AND user_id=$3',
+    create: 'INSERT INTO public.comments (comment_text, media_id, user_id) VALUES ($1, $2, $3) RETURNING comment_id',
+    update: 'UPDATE public.comments SET comment_text=$1, created_at=NOW() WHERE comment_id=$2 AND user_id=$3 RETURNING comment_text, created_at',
     delete: 'DELETE FROM public.comments WHERE comment_id=$1',
-    select: 'SELECT C.*, username, profile_pic FROM public.comments as C INNER JOIN public.app_user as U on U.user_id = C.user_id INNER JOIN public.media as M on M.media_id = C.media_id WHERE M.media_id=$1',
+    select: 'SELECT C.*, username, profile_pic, (C.user_id=$1) AS allow FROM public.comments as C INNER JOIN public.app_user as U on U.user_id = C.user_id INNER JOIN public.media as M on M.media_id = C.media_id WHERE M.media_id=$2',
+    selectComment: 'SELECT C.*, username, profile_pic, (C.user_id=$1) AS allow FROM public.comments as C INNER JOIN public.app_user as U on U.user_id = C.user_id INNER JOIN public.media as M on M.media_id = C.media_id WHERE C.comment_id=$2',
     commentsCount: 'SELECT COUNT(*) as comment_total FROM public.comments as C INNER JOIN public.media as M on M.media_id = C.media_id WHERE M.media_id = $1',
   }
 }

@@ -12,7 +12,9 @@ const get = (req, res) => {
       t.one(queries.follows['followers'], user_id)
     ]);
   }).then(data => {
-    res.send({status: 200, data: data})
+    let dataAsOne = {};
+    data.map(obj => Object.keys(obj).forEach(key => dataAsOne[key] = obj[key]))
+    res.send({status: 200, data: dataAsOne})
   }).catch(e => {
     console.log(e.message || e)
     res.send({status: 500, error: e.message || e})
@@ -29,7 +31,7 @@ const post = (req, res) => {
         res.send({status: 200, message: `Now you follow ${data.follow_id}!`});
       }).catch(e => { 
         console.log(e.message || e);
-        res.send({status: 402, error: e.message || e});
+        res.send({status: 402, error: 'User already followed'});
       })
   }).catch(e => {
     res.send({status: 500, error: e.message || e})

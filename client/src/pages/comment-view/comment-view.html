@@ -1,5 +1,5 @@
 <!--
-  Generated template for the PostDetailPage page.
+  Generated template for the PostCommentPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,12 +7,15 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>post-detail</ion-title>
+    <ion-title>post-comment</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content>
-  <post [props]="post" (onComment)="showComment($event)"></post>
+<ion-content padding>
+
+  <comment-list [media]="id">
+  </comment-list>
+
 </ion-content>

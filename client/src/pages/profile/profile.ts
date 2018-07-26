@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
 
 import { User, MessageController } from '../../utils';
 import { UsersProvider } from '../../providers/users/users';
@@ -22,10 +25,23 @@ import { PostDetailPage } from '../post-detail/post-detail';
 })
 export class ProfilePage {
 
-  user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
+  user: User = {
+    user_id: 0,
+    fullname: '',
+    username: '',
+    email: '',
+    bio: '',
+    profile_pic: '',
+    stats: {
+      posts: 0,
+      followers: 0,
+      followings: 0,
+    }
+  };
+
   posts: any;
   galleryType: string = 'regular';
-  guest: boolean;
+  editable: boolean;
 
   constructor(
     public navCtrl: NavController, 
@@ -36,25 +52,31 @@ export class ProfilePage {
     private msg: MessageController
   ) {}
 
-  
   ionViewDidEnter() {
     let userId = this.navParams.get('userId');
     if (userId) {
       this.getUserProfileById(userId);
       this.getPostsById(userId);
-      this.guest = true;
+      //console.log(userId);
+      //console.log(this.user.user_id);
+      if (userId === this.user.user_id) {
+        this.getAsyncBoolean(true).subscribe(value => this.editable = value);
+      }
     } else {
       this.getUserProfile();
       this.getUserPosts();
-      this.guest = false;
+      this.getAsyncBoolean(true).subscribe(value => this.editable = value);
     }
+  }
+
+  getAsyncBoolean(b: boolean) {
+    return Observable.of(b);
   }
 
   getUserProfileById(id) {
     this.userService.getUserProfileById(id).subscribe(data => {
       if (data.status === 200) {
-        this.user = data.user;
-        console.log(this.user)
+        this.user = data.data;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -64,8 +86,7 @@ export class ProfilePage {
   getUserProfile() {
     this.userService.getUserProfile().subscribe(data => {
       if (data.status === 200) {
-        this.user = data.user;
-        console.log(this.user)
+        this.user = data.data;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -94,6 +115,19 @@ export class ProfilePage {
     })
   }
 
+  doFollow(id) {
+    this.userService.postFollow(id).subscribe((data) => {
+      if (data.status === 200) {
+        this.msg.toast(data.message);
+        this.user.stats.followers++; //maraña
+      } else {
+        this.msg.toast(data.error);
+      }
+    }, (error) => {
+      this.msg.toast(error.message)
+    })
+  }
+
   edit() {
     this.navCtrl.push(EditPage);
   }
@@ -101,10 +135,6 @@ export class ProfilePage {
   logout() {
     this.userService.logout();
     this.app.getRootNav().setRoot(LoginPage);
-  }
-
-  toDate(value) {
-    return new Date(value).toLocaleDateString();
   }
 
   showDetail(id) {

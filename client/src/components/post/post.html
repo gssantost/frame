@@ -1,34 +1,38 @@
 <!-- Generated template for the PostComponent component -->
-<ion-card>
+<ion-card no-margin>
   <ion-item>
     <ion-avatar item-start>
       <img src="{{profile || props.profile_pic}}">
     </ion-avatar>
     <h2 (click)="handleUsernameClick(props.user_id)">{{username || props.username}}</h2>
-    <p>
-      <small>
-        {{props.created_at | amDateFormat:'LL' | amTimeAgo}}
-      </small>
-  </p>
   </ion-item>
   
   <img src="{{props.media_url}}">
 
   <ion-row>
-    <ion-col col-1>
+    <ion-col col-2>
       <button ion-button icon-start clear small>
-        <ion-icon name="thumbs-up"></ion-icon>
-        <div></div>
+        <ion-icon name="star"></ion-icon>
       </button>
     </ion-col>
-    <ion-col col-1>
-      <button ion-button icon-start clear small>
-        <ion-icon name="text"></ion-icon>
-        <div></div>
+    <ion-col col-2>
+      <button ion-button icon-start clear small no-padding
+        (click)="handleCommentLink(props.media_id)">
+        <ion-icon name="text" no-padding></ion-icon>
       </button>
     </ion-col>
   </ion-row>
   <ion-card-content>
-    <p>{{props.media_des}}</p>
+    <p>
+      <strong>{{ props.username }}  </strong> {{ props.media_des }}
+    </p>
+    <p>
+      <small (click)="handleCommentLink(props.media_id)">Read comments.</small>
+    </p>
+    <p>
+      <small>
+        {{props.created_at | amDateFormat:'LL' | amTimeAgo | uppercase}}
+      </small>
+    </p>
   </ion-card-content>
 </ion-card>

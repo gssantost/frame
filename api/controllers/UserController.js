@@ -5,51 +5,53 @@ import bcrypt from 'bcryptjs'
 
 const { db, queries, config } = helpers
 
+function doBatch(id) {
+  return db.task(t => t.batch([
+    t.one(queries.user['selectById'], id),
+    t.one(queries.follows['postsCount'], id),
+    t.one(queries.follows['followings'], id),
+    t.one(queries.follows['followers'], id)
+  ]));
+}
+
 /** GET:  */
 const getByUserId = (req, res) => {
-  db.connect().then((obj) => {
-    obj.one(queries.user['selectById'], req.params.userId)
-      .then((data) => {
-        const { profile_pic, ...rest } = data
-        const user = { 
-          ...rest,
-          profile_pic: config.static + profile_pic
-        }
-        res.send({status: 200, user})
-        obj.done()
-        next(data)
-      })
-      .catch((e) => {
-        res.send({status: 402, error: e.message || e})
-        obj.done()
-      })
-  }).catch((e) => {
-    res.send({status: 500, error: e.message || e})
-  })
+  doBatch(req.params.userId)
+  .then(data => {
+    let stats = {};
+    const { profile_pic, ...rest } = data.shift();
+    data.map(obj => Object.keys(obj).forEach(key => stats[key] = parseInt(obj[key])));
+    res.send({status: 200, data: 
+      { 
+        ...rest,
+        profile_pic: config.static + profile_pic,
+        stats: stats
+      } 
+    });
+  }).catch(e => {
+    console.log(e || e.message);
+    res.send({status: 500, error: e.message || e});
+  });
 }
 
 /** GET: all User data from DB (no password returned to client app, of course...) */
 const getUser = (req, res) => {
-  const { user_id } = req.user
-  console.log(user_id)
-  db.connect().then((obj) => {
-    obj.one(queries.user['selectById'], user_id)
-      .then((data) => {
-        const { profile_pic, ...rest } = data
-        const user = { 
-          ...rest,
-          profile_pic: config.static + profile_pic
-        }
-        res.send({status: 200, user})
-        obj.done()
-      })
-      .catch((e) => {
-        res.send({status: 402, error: e.message || e})
-        obj.done()
-      })
-  }).catch((e) => {
-    res.send({status: 500, error: e.message || e})
-  })
+  doBatch(req.user.user_id)
+  .then(data => {
+    let stats = {};
+    const { profile_pic, ...rest } = data.shift();
+    data.map(obj => Object.keys(obj).forEach(key => stats[key] = parseInt(obj[key])));
+    res.send({status: 200, data: 
+      { 
+        ...rest,
+        profile_pic: config.static + profile_pic,
+        stats: stats
+      } 
+    });
+  }).catch(e => {
+    console.log(e || e.message);
+    res.send({status: 500, error: e.message || e});
+  });
 }
 
 /** POST: update profile pic only... */

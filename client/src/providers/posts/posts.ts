@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Urls as srv } from '../../utils/index'
+import { Urls as srv } from '../../utils'
 import { Observable } from '../../../node_modules/rxjs/Observable';
 import { TokenProvider } from '../token/token';
 

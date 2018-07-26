@@ -55,6 +55,22 @@ export class UsersProvider {
     })
   }
 
+  getStats(): Observable<any> {
+    return this.http.get(`${srv.BASE_URL}/users/stats`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
+  }
+
+  postFollow(id): Observable<any> {
+    return this.http.post(`${srv.BASE_URL}/users/follow`, { followId: id }, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
+  }
+
   logout() {
     this.tokenService.setToken('');
     this.tokenService.clear();

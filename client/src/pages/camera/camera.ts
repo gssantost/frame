@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from 'ionic-angular';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, ActionSheetController, NavParams, Platform } from 'ionic-angular';
 import { PictureProvider } from '../../providers/picture/picture';
-import { Camera } from '../../../node_modules/@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 import { MessageController } from '../../utils';
 import { TokenProvider } from '../../providers/token/token';
 import { Urls as srv } from '../../utils';
@@ -67,7 +66,6 @@ export class CameraPage {
   send() {
     if ((this.pictureService.getPicture() && this.description) !== '') {
       this.upload();
-      this.navCtrl.pop();
     } else {
       this.msg.toast('Error', 'No post!')
     }

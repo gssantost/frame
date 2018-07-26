@@ -13,6 +13,7 @@ import { UsersProvider } from '../providers/users/users';
 import { PictureProvider } from '../providers/picture/picture';
 import { PostsProvider } from '../providers/posts/posts';
 import { TokenProvider } from '../providers/token/token';
+import { CommentProvider } from '../providers/comment/comment';
 
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { Diagnostic } from '@ionic-native/diagnostic';
@@ -26,9 +27,10 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 import { PostDetailPageModule } from '../pages/post-detail/post-detail.module';
 import { EditPageModule } from '../pages/edit/edit.module';
 import { LoginPageModule } from '../pages/login/login.module';
+import { CommentViewPageModule } from '../pages/comment-view/comment-view.module';
 import { LoginPage } from '../pages/login/login';
-import { MessageController } from '../utils';
 
+import { MessageController } from '../utils';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { MessageController } from '../utils';
     MomentModule,
     ComponentsModule,
     ProfilePageModule,
+    CommentViewPageModule,
     PostDetailPageModule,
     EditPageModule,
     LoginPageModule,
@@ -68,6 +71,7 @@ import { MessageController } from '../utils';
     PictureProvider,
     PostsProvider,
     TokenProvider,
+    CommentProvider,
   ]
 })
 export class AppModule {}

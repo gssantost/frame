@@ -16,12 +16,17 @@ export class PostComponent {
   @Input() username: string;
   @Input() profile: string;
   @Input() props: Post;
-  @Output() navigate: EventEmitter<any> = new EventEmitter();
+  @Output() onProfile: EventEmitter<any> = new EventEmitter();
+  @Output() onComment: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
   handleUsernameClick(id: number) {
-    this.navigate.emit(id);
+    this.onProfile.emit(id);
+  }
+
+  handleCommentLink(id: number) {
+    this.onComment.emit(id);
   }
 
 }

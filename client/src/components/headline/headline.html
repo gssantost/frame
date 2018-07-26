@@ -1,0 +1,42 @@
+<!-- Generated template for the HeadlineComponent component -->
+<ion-grid>
+  <ion-row>
+    <ion-col col-4>
+      <img src={{props.profile_pic}}>
+    </ion-col>
+    <ion-col col-8 padding-left>
+      <table>
+        <tr>
+          <th padding-bottom padding-right padding-left>{{ props.stats.posts }}</th>
+          <th padding-bottom padding-right>{{ props.stats.followers }}</th>
+          <th padding-bottom padding-right>{{ props.stats.followings }}</th>
+        </tr>
+        <tr>
+          <th padding-right padding-left>posts</th>
+          <th padding-right>followers</th>
+          <th padding-right>following</th>
+        </tr>
+      </table>
+      <ion-row>
+        <ion-col style="text-align: center">
+          <button ion-button outline color="dark" small *ngIf="editable" (click)="handleEdit()">
+            Edit profile
+          </button>
+          
+          <button ion-button outline color="dark" small *ngIf="!editable" (click)="handleFollow(props.user_id)">
+            Follow
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col>
+      <p>
+        <strong>{{ props.fullname }}</strong>
+      </p>
+      <p>{{ props.bio }}</p>
+      <p>
+        <strong>Contact: </strong>{{ props.email }}
+      </p>
+    </ion-col>
+  </ion-row>
+</ion-grid>

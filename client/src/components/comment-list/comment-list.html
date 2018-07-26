@@ -1,0 +1,20 @@
+<!-- Generated template for the CommentListComponent component -->
+<ion-list no-padding no-margin>
+  <comment *ngFor="let comment of comments; let i = index" [props]="comment" [index]="i"
+    (onUpdate)="handleUpdate($event)" (onDelete)="handleDelete($event)">
+  </comment>
+  
+  <ion-row class="bottom">
+    <ion-col>
+    <ion-item>
+        <ion-icon name="text" item-left></ion-icon>
+        <ion-textarea [(ngModel)]="newComment" 
+          type="text" placeholder="Write your comment..." name="text" required>
+        </ion-textarea>
+        <div (click)="handleSubmit()" item-right>
+          <p><small class="blue">POST!</small></p>
+        </div>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-list>

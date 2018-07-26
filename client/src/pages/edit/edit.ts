@@ -19,7 +19,7 @@ import { Camera } from '@ionic-native/camera';
 })
 export class EditPage {
 
-  user: User = { fullname: '', username: '', email: '', bio: '', profile_pic: '' }
+  user: User;
 
   constructor(
     public navCtrl: NavController, 
@@ -29,7 +29,9 @@ export class EditPage {
     private pictureService: PictureProvider, 
     private camera: Camera, 
     private msg: MessageController, 
-    ) {}
+    ) {
+      this.user = { fullname: '', username: '', email: '', bio: '', profile_pic: '' };
+    }
 
   ionViewDidEnter() {
     this.getUserProfile()
@@ -38,7 +40,7 @@ export class EditPage {
   getUserProfile() {
     this.userService.getUserProfile().subscribe(data => {
       if (data.status === 200) {
-        this.user = data.user;
+        this.user = data.data;
       } else {
         this.msg.show('Error', data.error);
       }
@@ -80,7 +82,6 @@ export class EditPage {
             this.navCtrl.pop();
           });
         } else {
-          console.log(JSON.stringify(data.error));
           this.msg.dismiss();
           this.msg.show('Error', data.error.message || data.error);
         }
@@ -112,14 +113,13 @@ export class EditPage {
 
     this.pictureService.upload(`${srv.BASE_URL}/users/`, options)
       .then((data) => {
-        console.log(JSON.stringify(data) + " Uploaded Successfully");
+        console.log(data);
         this.msg.dismiss();
-        this.msg.show('Success', JSON.stringify(data.response));
+        this.msg.show('Success', 'Upload completed!');
       })
       .catch((err) => {
-        console.log(JSON.stringify(err));
         this.msg.dismiss();
-        this.msg.show('Error', JSON.stringify(err));
+        this.msg.show('Error', err.message);
       })
   }
 
