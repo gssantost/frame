@@ -18,6 +18,7 @@ export class PostComponent {
   @Input() props: Post;
   @Output() onProfile: EventEmitter<any> = new EventEmitter();
   @Output() onComment: EventEmitter<any> = new EventEmitter();
+  @Output() onLike: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -27,6 +28,10 @@ export class PostComponent {
 
   handleCommentLink(id: number) {
     this.onComment.emit(id);
+  }
+
+  handleLike(id: number) {
+    this.onLike.emit(id);
   }
 
 }

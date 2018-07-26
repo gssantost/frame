@@ -81,7 +81,7 @@ const getById = (req, res) => {
 const getByItems = (req, res) => {
   console.log(req.params)
   db.connect().then((obj) => {
-    obj.any(queries.media['pagination'], [req.params.items, req.params.page])
+    obj.any(queries.media['pagination'], [req.user.user_id, req.params.items, req.params.page])
       .then(data => {
 
         const mapped = data.map(post => {

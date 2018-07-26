@@ -29,6 +29,10 @@ export interface Post {
   media_url: string;
   media_des: string;
   media_id: number;
+  comments?: string;
+  likes?: string;
+  has_like?: boolean;
+  has_comment?: boolean;
 }
 
 export interface Comment {

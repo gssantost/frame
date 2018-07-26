@@ -12,7 +12,8 @@ const queries = {
     create: 'INSERT INTO public.media (media_des, media_url, user_id) VALUES ($1, $2, $3)',
     selectByUserId: 'SELECT * FROM public.media WHERE user_id=$1 ORDER BY created_at DESC',
     selectById: 'SELECT media_id, media_des, media_url, created_at, U.user_id, U.username, U.profile_pic FROM public.media as M INNER JOIN app_user U ON U.user_id = M.user_id WHERE media_id=$1',
-    pagination: 'SELECT media_id, media_des, media_url, created_at, U.user_id, U.username, U.profile_pic FROM public.media as M INNER JOIN app_user U ON U.user_id = M.user_id ORDER BY created_at DESC LIMIT $1 OFFSET(($2 - 1) * $1)', /** ^1 */
+    /*pagination: 'SELECT media_id, media_des, media_url, created_at, U.user_id, U.username, U.profile_pic FROM public.media as M INNER JOIN app_user U ON U.user_id = M.user_id ORDER BY created_at DESC LIMIT $1 OFFSET(($2 - 1) * $1)',*/ /** ^1 */
+    pagination: 'SELECT M.*, U.username, U.profile_pic, COUNT( * ) FILTER(WHERE C.media_id = M.media_id) AS comments, COUNT( * ) FILTER(WHERE L.likes_state) AS likes, CASE WHEN(L.user_id = $1 AND L.likes_state) THEN true ELSE false END AS has_like, CASE WHEN(C.media_id = M.media_id) THEN true ELSE false END AS has_comment FROM media as M INNER JOIN app_user AS U ON U.user_id = M.user_id FULL OUTER JOIN likes AS L ON L.media_id = M.media_id FULL OUTER JOIN comments AS C ON C.media_id = M.media_id GROUP BY M.media_id, U.username, U.profile_pic, L.user_id, L.likes_state, C.media_id ORDER BY created_at DESC LIMIT $2 OFFSET(($3 - 1) * $2)',
     update: 'UPDATE public.media SET media_des = $1 WHERE media_id=$2 RETURNING media_des',
     delete: 'DELETE FROM public.media WHERE media_id=$1',
   },
