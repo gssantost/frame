@@ -7,7 +7,7 @@ const get = (req, res) => {
   const { user_id } = req.user
   console.log(user_id)
   db.connect().then((obj) => {
-    obj.any(queries.media['selectByUserId'], user_id)
+    obj.any(queries.media['selectByUserId'], [user_id, user_id])
       .then((data) => {
 
         const mapped = data.map(post => {
@@ -32,17 +32,16 @@ const get = (req, res) => {
 /** GET: get all the user's posts BY id in param */
 const getThisPosts = (req, res) => {
   db.connect().then((obj) => {
-    obj.any(queries.media['selectByUserId'], req.params.userId)
+    obj.any(queries.media['selectByUserId'], [req.user.user_id, req.params.userId])
       .then((data) => {
-
         const mapped = data.map(post => {
-          const { media_url, ...rest } = post
+          const { media_url, profile_pic, ...rest } = post;
           return { 
             ...rest, 
+            profile_pic: config.static + profile_pic,
             media_url: config.static + media_url
           }
         })
-
         res.send({status: 200, data: mapped})
         obj.done()
       }).catch(e => {
@@ -58,7 +57,7 @@ const getThisPosts = (req, res) => {
 /** GET: get full post by id */
 const getById = (req, res) => {
   db.connect().then((obj) => {
-    obj.one(queries.media['selectById'], req.params.mediaId)
+    obj.one(queries.media['selectById'], [req.user.user_id, req.params.mediaId])
       .then((data) => {
           const { media_url, profile_pic, ...rest } = data
           const fixedData = { 
@@ -106,14 +105,11 @@ const getByItems = (req, res) => {
 
 /** POST: make a post! */
 const post = (req, res) => {
-
   if (req.file === undefined) {
     res.send({status: 400, message: 'No file found!'})
   }
-
-  const { body: { description }, file: { path }, user } = req
-  console.log(req.body)
-  console.log(user.user_id)
+  
+  const { body: { description }, file: { path }, user } = req;
 
   db.connect().then((obj) => {
     obj.none(queries.media['create'], [description, path, user.user_id])

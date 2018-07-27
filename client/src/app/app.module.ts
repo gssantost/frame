@@ -31,6 +31,7 @@ import { CommentViewPageModule } from '../pages/comment-view/comment-view.module
 import { LoginPage } from '../pages/login/login';
 
 import { MessageController } from '../utils';
+import { LikesProvider } from '../providers/likes/likes';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MessageController } from '../utils';
     PostsProvider,
     TokenProvider,
     CommentProvider,
+    LikesProvider,
   ]
 })
 export class AppModule {}

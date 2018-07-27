@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommentProvider } from '../../providers/comment/comment';
 import { Comment } from '../../utils/interfaces';
 import { MessageController } from '../../utils';
@@ -25,7 +25,9 @@ export class CommentListComponent implements OnDestroy, AfterViewInit {
 
   @Input() media: number;
 
-  constructor(private commentService: CommentProvider, private msg: MessageController) {}
+  constructor(private commentService: CommentProvider, private msg: MessageController) {
+    this.newComment = '';
+  }
 
   ngAfterViewInit() {
     this.commentService.getComments(this.media)
@@ -65,27 +67,35 @@ export class CommentListComponent implements OnDestroy, AfterViewInit {
   handleSubmit() {
     if (this.isUpdate) {
       const { id, index } = this.event;
-      this.commentService.putComment(this.newComment, id)
-        .subscribe(data => {
-          if (data.status === 200) {
-            this.msg.toast(data.message);
-            const clone = { ...this.comments[index] };
-            this.comments.splice(index, 1, { ...clone, ...data.data });
+      if (this.newComment.trim() !== '') {
+        this.commentService.putComment(this.newComment, id)
+          .subscribe(data => {
+            if (data.status === 200) {
+              this.msg.toast(data.message);
+              const clone = { ...this.comments[index] };
+              this.comments.splice(index, 1, { ...clone, ...data.data });
+            }
           }
-        }
-      );
-      this.event = {};
-      this.isUpdate = false;
-      this.newComment = '';
+          );
+        this.event = {};
+        this.isUpdate = false;
+        this.newComment = '';
+      } else {
+        this.msg.toast(`Try deleting it!`);
+      }
+      
     } else {
-      if (this.newComment === '') { this.msg.toast('FIELD IS EMPTY'); }
-      this.commentService.postComment(this.newComment, this.media)
-        .subscribe(data => {
-          if (data.status === 200) {
-            this.comments.push(data.data);
+      if (this.newComment.trim() === '') { 
+        this.msg.toast(`You can't comment anything`); 
+      } else {
+        this.commentService.postComment(this.newComment.trim(), this.media)
+          .subscribe(data => {
+            if (data.status === 200) {
+              this.comments.push(data.data);
+            }
           }
-        }
-      );
+        );
+      }
     }
   }
 

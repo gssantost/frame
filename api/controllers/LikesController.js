@@ -23,7 +23,8 @@ const post = (req, res) => {
 
   db.task(async t => {
     const like = await t.oneOrNone(queries.likes['select'], [user_id, mediaId]);
-    if (like) {
+    console.log(like);
+    if (like !== null) {
      return await t.oneOrNone(queries.likes['update'], [user_id, mediaId]);
     }
     return await t.oneOrNone(queries.likes['create'], [user_id, mediaId]);

@@ -10,6 +10,7 @@ import { LoginPage } from '../login/login';
 import { EditPage } from '../edit/edit';
 import { PostsProvider } from '../../providers/posts/posts';
 import { PostDetailPage } from '../post-detail/post-detail';
+import { CommentViewPage } from '../comment-view/comment-view';
 
 /**
  * Generated class for the ProfilePage page.
@@ -36,8 +37,11 @@ export class ProfilePage {
       posts: 0,
       followers: 0,
       followings: 0,
-    }
+    },
+    has_follow: false
   };
+
+  canEdit: boolean;
 
   posts: any;
   galleryType: string = 'regular';
@@ -60,12 +64,12 @@ export class ProfilePage {
       //console.log(userId);
       //console.log(this.user.user_id);
       if (userId === this.user.user_id) {
-        this.getAsyncBoolean(true).subscribe(value => this.editable = value);
+        this.canEdit = true;
       }
     } else {
       this.getUserProfile();
       this.getUserPosts();
-      this.getAsyncBoolean(true).subscribe(value => this.editable = value);
+      //this.getAsyncBoolean(true).subscribe(value => this.editable = value);
     }
   }
 
@@ -77,6 +81,7 @@ export class ProfilePage {
     this.userService.getUserProfileById(id).subscribe(data => {
       if (data.status === 200) {
         this.user = data.data;
+        this.canEdit = false;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -87,6 +92,7 @@ export class ProfilePage {
     this.userService.getUserProfile().subscribe(data => {
       if (data.status === 200) {
         this.user = data.data;
+        this.canEdit = true;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -119,7 +125,7 @@ export class ProfilePage {
     this.userService.postFollow(id).subscribe((data) => {
       if (data.status === 200) {
         this.msg.toast(data.message);
-        this.user.stats.followers++; //maraña
+        this.user.stats.followers++;
       } else {
         this.msg.toast(data.error);
       }
@@ -138,7 +144,11 @@ export class ProfilePage {
   }
 
   showDetail(id) {
-    this.navCtrl.push(PostDetailPage, { mediaId: id})
+    this.navCtrl.push(PostDetailPage, { mediaId: id })
+  }
+
+  showComment(id) {
+    this.navCtrl.push(CommentViewPage, { mediaId: id })
   }
 
 }

@@ -6,6 +6,7 @@ export interface User {
   profile_pic: string;
   user_id?: number;
   stats?: Stats;
+  has_follow?: boolean;
 }
 
 export interface Credentials {

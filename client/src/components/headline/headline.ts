@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { User } from '../../utils';
 
 /**
@@ -12,14 +11,16 @@ import { User } from '../../utils';
   selector: 'headline',
   templateUrl: 'headline.html'
 })
-export class HeadlineComponent {
+export class HeadlineComponent implements AfterViewInit {
 
   @Input() props: User;
-  @Input() editable: Observable<boolean>;
+  @Input() editable: boolean;
   @Output() navigate: EventEmitter<any> = new EventEmitter();
   @Output() follow: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
+
+  ngAfterViewInit() {}
 
   handleEdit() {
     this.navigate.emit(null);

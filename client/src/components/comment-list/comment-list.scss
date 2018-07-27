@@ -3,6 +3,18 @@ comment-list {
   ion-row {
     position: fixed !important;
     bottom: 44px !important;
+    background: #fff;
+  }
+
+  .bottom {
+    position: fixed !important;
+    bottom: 44px !important;
+    background: #fff;
+  }
+
+  .input {
+    word-wrap: break-word;
+    width: 240px !important;
   }
 
   .blue {

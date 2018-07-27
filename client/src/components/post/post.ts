@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from '../../utils/interfaces';
+import { LikesProvider } from '../../providers/likes/likes';
+import { MessageController } from '../../utils';
 
 /**
  * Generated class for the PostComponent component.
@@ -18,9 +20,8 @@ export class PostComponent {
   @Input() props: Post;
   @Output() onProfile: EventEmitter<any> = new EventEmitter();
   @Output() onComment: EventEmitter<any> = new EventEmitter();
-  @Output() onLike: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(private LikeService: LikesProvider, private msg: MessageController) {}
 
   handleUsernameClick(id: number) {
     this.onProfile.emit(id);
@@ -30,8 +31,20 @@ export class PostComponent {
     this.onComment.emit(id);
   }
 
-  handleLike(id: number) {
-    this.onLike.emit(id);
+  onLike(id) {
+    this.LikeService.postLike(id)
+      .subscribe(data => {
+        if (data.status === 200) {
+          let counter = parseInt(this.props.likes);
+          this.props.has_like = !this.props.has_like;
+          this.props.has_like ? counter++ : counter--;
+          this.props.likes = counter.toString();
+          //this.msg.toast(data.message);
+        } else {
+          this.msg.toast(data.error);
+        }
+      }
+    );
   }
 
 }

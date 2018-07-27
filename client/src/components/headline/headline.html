@@ -23,7 +23,8 @@
             Edit profile
           </button>
           
-          <button ion-button outline color="dark" small *ngIf="!editable" (click)="handleFollow(props.user_id)">
+          <button ion-button outline [color]="props.has_follow ? 'blue' : 'dark' " small 
+            *ngIf="!props.has_follow" (click)="handleFollow(props.user_id)">
             Follow
           </button>
         </ion-col>

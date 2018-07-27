@@ -14,9 +14,11 @@ function doBatch(id) {
   ]));
 }
 
+
 /** GET:  */
 const getByUserId = (req, res) => {
-  doBatch(req.params.userId)
+  const { params: { userId } } = req;
+  doBatch(userId)
   .then(data => {
     let stats = {};
     const { profile_pic, ...rest } = data.shift();

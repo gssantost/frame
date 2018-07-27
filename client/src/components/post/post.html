@@ -1,5 +1,5 @@
 <!-- Generated template for the PostComponent component -->
-<ion-card no-margin>
+<ion-card>
   <ion-item>
     <ion-avatar item-start>
       <img src="{{profile || props.profile_pic}}">
@@ -12,7 +12,7 @@
   <ion-row>
     <ion-col col-2>
       <button ion-button icon-start clear small
-        (click)="handleLike(props.media_id)">
+        (click)="onLike(props.media_id)">
         <ion-icon [name]="props.has_like ? 'star' : 'star-outline' "></ion-icon>
       </button>
     </ion-col>
@@ -25,10 +25,15 @@
   </ion-row>
   <ion-card-content>
     <p>
-      <strong>{{ props.username }}  </strong> {{ props.media_des }}
+      <small>
+        <strong>{{ props.likes }} likes</strong>
+      </small>
     </p>
     <p>
-      <small (click)="handleCommentLink(props.media_id)">Read comments.</small>
+      <strong>{{ props.username }}  </strong> {{ props.media_des }}
+    </p>
+    <p *ngIf="props.has_comment">
+      <small (click)="handleCommentLink(props.media_id)">Read {{ props.comments }} comments.</small>
     </p>
     <p>
       <small>
