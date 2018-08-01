@@ -32,6 +32,13 @@ import { LoginPage } from '../pages/login/login';
 
 import { MessageController } from '../utils';
 import { LikesProvider } from '../providers/likes/likes';
+import { HomePage } from '../pages/home/home';
+import { HomePageModule } from '../pages/home/home.module';
+import { SearchPage } from '../pages/search/search';
+import { SearchPageModule } from '../pages/search/search.module';
+import { SearchProvider } from '../providers/search/search';
+import { TagViewPageModule } from '../pages/tag-view/tag-view.module';
+import { TagViewPage } from '../pages/tag-view/tag-view';
 
 @NgModule({
   declarations: [
@@ -47,13 +54,19 @@ import { LikesProvider } from '../providers/likes/likes';
     PostDetailPageModule,
     EditPageModule,
     LoginPageModule,
+    HomePageModule,
+    SearchPageModule,
+    TagViewPageModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    HomePage,
     LoginPage,
+    SearchPage,
+    TagViewPage,
   ],
   providers: [
     StatusBar,
@@ -74,6 +87,7 @@ import { LikesProvider } from '../providers/likes/likes';
     TokenProvider,
     CommentProvider,
     LikesProvider,
+    SearchProvider,
   ]
 })
 export class AppModule {}

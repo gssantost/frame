@@ -19,12 +19,12 @@
       </table>
       <ion-row>
         <ion-col style="text-align: center">
-          <button ion-button outline color="dark" small *ngIf="editable" (click)="handleEdit()">
+          <button ion-button outline color="dark" small *ngIf="props.can_edit" (click)="handleEdit()">
             Edit profile
           </button>
           
-          <button ion-button outline [color]="props.has_follow ? 'blue' : 'dark' " small 
-            *ngIf="!props.has_follow" (click)="handleFollow(props.user_id)">
+          <button ion-button outline [color]="followable ? 'blue' : 'dark' " small 
+            *ngIf="!props.can_edit" (click)="handleFollow()">
             Follow
           </button>
         </ion-col>

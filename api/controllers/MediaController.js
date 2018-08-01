@@ -104,7 +104,7 @@ const getByItems = (req, res) => {
 }
 
 /** POST: make a post! */
-const post = (req, res) => {
+/*const post = (req, res) => {
   if (req.file === undefined) {
     res.send({status: 400, message: 'No file found!'})
   }
@@ -124,6 +124,48 @@ const post = (req, res) => {
       })
   }).catch((e) => {
     res.send({status: 500, error: e.message || e})
+  })
+}*/
+
+/** POST: make a Post (with hashtags)! */
+const post = (req, res) => {
+  const { body: { description }, file, user } = req;
+
+  if (file === undefined) {
+    res.send({status: 400, message: 'No file found!'})
+  }
+  const regexp = new RegExp(/#\s?/g);
+  const hashtag = description.split(' ').filter(k => k.match(regexp));
+  console.log(hashtag);
+
+  db.task(async t => {
+    const media = await t.one(queries.media['create'], [description, file.path, user.user_id]);
+    if (media) {
+      let array = [];
+      for (let i = 0; i < hashtag.length; i++) {
+        array.push(t.one(queries.tags['createTag'], hashtag[i]));
+      }
+      const tags = await t.batch(array);
+        if (tags) {
+          console.log(tags);
+          let array = [];
+          for (let i = 0; i < tags.length; i++) {
+            array.push(t.none(queries.tags['createMediaTag'], [media.media_id, tags[i].tag_id]));
+          }
+          return await t.batch(array);
+        }
+        return [];
+      }
+      return [];
+    }
+  )
+  .then((data) => {
+    console.log(data);
+    res.send({status: 200, message: 'Done!'});
+  })
+  .catch((e) => {
+    console.log(e.message || e);
+    res.send({status: 400, error: e.message || e});
   })
 }
 

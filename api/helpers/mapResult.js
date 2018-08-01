@@ -5,4 +5,9 @@ function mapUrls(data) {
   return { ...rest, profile_pic: config.static + profile_pic };
 }
 
-export default { mapUrls };
+function mapMedia(data) {
+  const { media_url, ...rest } = data;
+  return { ...rest, media_url: config.static + media_url };
+}
+
+export default { mapUrls, mapMedia };

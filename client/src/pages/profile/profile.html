@@ -21,7 +21,7 @@
 
 <ion-content>
   
-  <headline [props]="user" [editable]="canEdit" (navigate)="edit($event)" (follow)="doFollow($event)">
+  <headline [props]="user" [followable]="y" (navigate)="edit($event)" (follow)="doFollow($event)">
   </headline>
   
   <ion-segment [(ngModel)]="galleryType" color="primary" no-margin>
@@ -48,6 +48,6 @@
             (onComment)="showComment($event)">
       </post>
   </ion-list>
-</div>
+  </div>
 
 </ion-content>

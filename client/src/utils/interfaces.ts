@@ -7,6 +7,7 @@ export interface User {
   user_id?: number;
   stats?: Stats;
   has_follow?: boolean;
+  can_edit?: boolean;
 }
 
 export interface Credentials {
@@ -44,4 +45,14 @@ export interface Comment {
   profile_pic: string;
   user_id: number;
   media_id: number;
+}
+
+export interface Result {
+  tag_id?: number;
+  tag_des?: string;
+  username?: string;
+  email?: string;
+  bio?: string;
+  profile_pic?: string;
+  user_id?: number;
 }

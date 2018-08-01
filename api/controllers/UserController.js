@@ -14,7 +14,6 @@ function doBatch(id) {
   ]));
 }
 
-
 /** GET:  */
 const getByUserId = (req, res) => {
   const { params: { userId } } = req;

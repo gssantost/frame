@@ -4,8 +4,8 @@ import profileUpload from '../middlewares/profileUpload';
 
 const router = express.Router();
 
-router.get('/stats', FollowController.get);
 router.post('/follow', FollowController.post);
+router.get('/follow/:userId', FollowController.get);
 router.get('/', UserController.getUser);
 router.get('/:userId', UserController.getByUserId);
 router.put('/', UserController.putUser);

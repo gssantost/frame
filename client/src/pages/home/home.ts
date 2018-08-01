@@ -6,6 +6,7 @@ import { MessageController } from '../../utils';
 import { PostsProvider } from '../../providers/posts/posts';
 import { ProfilePage } from '../profile/profile';
 import { CommentViewPage } from '../comment-view/comment-view';
+import { SearchPage } from '../search/search';
 
 
 /**
@@ -60,7 +61,7 @@ export class HomePage {
   }
 
   search() {
-    this.msg.show('Ups!', 'Page in development...')
+    this.navCtrl.setRoot(SearchPage);
   }
 
   showProfile(id) {

@@ -1,8 +1,5 @@
 import multer from 'multer';
 import mkdirp from 'mkdirp';
-import helpers from '../helpers';
-
-const { config } = helpers
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -11,11 +8,11 @@ const storage = multer.diskStorage({
     cb(null, dest)
   },
   filename: (req, file, cb) => {
-    let rexp = /^.|,|;/
-    if (file.originalname.match(rexp)) {
-      file.originalname.replace(rexp, '');
+    let newFileName = '';
+    if (file.originalname.match(/^.|,|;/)) {
+      newFileName = file.originalname.replace(/^.|,|;/, '');
     }
-    cb(null, file.originalname)
+    cb(null, newFileName)
   }
 })
 

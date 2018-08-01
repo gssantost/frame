@@ -1,0 +1,34 @@
+<!-- Generated template for the SearchBoxComponent component -->
+<div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col>
+        <ion-item it>
+          <ion-icon name="search"></ion-icon>
+        </ion-item>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-item>
+        <ion-input type="text" placeholder="search for..." #searchInput (keyup)="search(searchInput.value)">
+        </ion-input>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+    <ion-item *ngFor="let result of results$ | async" (click)="handle(result)">
+      <ion-avatar item-start>
+        <img src="{{result.profile_pic || urlToTag}}">
+      </ion-avatar>
+      <h2>{{ result.username || result.tag_des }}</h2>
+      <p>
+        <small *ngIf="result.bio">{{ result.bio }}</small>
+      </p>
+    </ion-item>
+  </ion-list>
+
+</div>

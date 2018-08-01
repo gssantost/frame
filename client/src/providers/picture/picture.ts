@@ -67,7 +67,6 @@ export class PictureProvider {
     }
   }
 
-  /** OK, it works with a promise too */
   upload(url, options): Promise<FileUploadResult> {
     return new Promise((res, rej) => {
       let filename = this.getPicture();
@@ -89,7 +88,7 @@ export class PictureProvider {
         }, 
         (error) => {
           this.setPicture('');
-          rej(error)
+          rej(error.error)
         }
       );
     });
@@ -116,25 +115,5 @@ export class PictureProvider {
     });
     toast.present();
   }
-
-  /** funciona */
-  /*upload(url, options, onSuccess?, onError?) {
-    let targetPath = this.pathForImage(this.getPicture());
-    let filename = this.getPicture();
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    const configs: FileUploadOptions = {
-      fileKey: 'file',
-      fileName: filename,
-      chunkedMode: false,
-      ...options
-    };
-
-    fileTransfer.upload(targetPath, url, configs).then(
-      (data) => onSuccess(data), 
-      (error) => onError(error)
-    );
-  }*/
 
 }

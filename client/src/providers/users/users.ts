@@ -55,16 +55,24 @@ export class UsersProvider {
     })
   }
 
-  getStats(): Observable<any> {
-    return this.http.get(`${srv.BASE_URL}/users/stats`, {
+  postFollow(followId): Observable<any> {
+    return this.http.post(`${srv.BASE_URL}/users/follow`, { followId }, {
       headers: {
         Authorization: `Bearer ${this.tokenService.getToken()}`
       }
     })
   }
 
-  postFollow(id): Observable<any> {
-    return this.http.post(`${srv.BASE_URL}/users/follow`, { followId: id }, {
+  getFollow(userId): Observable<any> {
+    return this.http.get(`${srv.BASE_URL}/users/follow/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenService.getToken()}`
+      }
+    })
+  }
+
+  deleteFollow(followId): Observable<any> {
+    return this.http.delete(`${srv.BASE_URL}/users/${followId}`, {
       headers: {
         Authorization: `Bearer ${this.tokenService.getToken()}`
       }

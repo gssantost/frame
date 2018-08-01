@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
-
 import { User, MessageController } from '../../utils';
 import { UsersProvider } from '../../providers/users/users';
 import { LoginPage } from '../login/login';
@@ -38,15 +34,14 @@ export class ProfilePage {
       followers: 0,
       followings: 0,
     },
-    has_follow: false
+    has_follow: false,
+    can_edit: false,
   };
 
-  canEdit: boolean;
-
+  y: boolean; 
   posts: any;
   galleryType: string = 'regular';
-  editable: boolean;
-
+  
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -61,27 +56,18 @@ export class ProfilePage {
     if (userId) {
       this.getUserProfileById(userId);
       this.getPostsById(userId);
-      //console.log(userId);
-      //console.log(this.user.user_id);
-      if (userId === this.user.user_id) {
-        this.canEdit = true;
-      }
+      this.getFollow(userId);
     } else {
       this.getUserProfile();
       this.getUserPosts();
-      //this.getAsyncBoolean(true).subscribe(value => this.editable = value);
     }
-  }
-
-  getAsyncBoolean(b: boolean) {
-    return Observable.of(b);
   }
 
   getUserProfileById(id) {
     this.userService.getUserProfileById(id).subscribe(data => {
       if (data.status === 200) {
         this.user = data.data;
-        this.canEdit = false;
+        this.user.can_edit = false;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -92,7 +78,7 @@ export class ProfilePage {
     this.userService.getUserProfile().subscribe(data => {
       if (data.status === 200) {
         this.user = data.data;
-        this.canEdit = true;
+        this.user.can_edit = true;
       } else {
         this.msg.show('Error', data.message);
       }
@@ -121,16 +107,40 @@ export class ProfilePage {
     })
   }
 
-  doFollow(id) {
-    this.userService.postFollow(id).subscribe((data) => {
+  doFollow(event) {
+    const { id, followable } = event;
+    if (!followable) {
+      this.userService.postFollow(id).subscribe((data) => {
+        if (data.status === 200) {
+          this.msg.toast(data.message);
+          this.user.stats.followers++;
+          this.y = true;
+        } else {
+          this.msg.toast(data.error);
+        }
+      }, (error) => {
+        this.msg.toast(error.message)
+      })
+    } else {
+      this.userService.deleteFollow(id).subscribe((data) => {
+        if (data.status === 200) {
+          this.msg.toast(data.message);
+          this.user.stats.followers--;
+          this.y = false;
+        } else {
+          this.msg.toast(data.error);
+        }
+      }, (error) => this.msg.toast(error.message))
+    }
+  }
+
+  getFollow(id) {
+    this.userService.getFollow(id).subscribe((data) => {
       if (data.status === 200) {
-        this.msg.toast(data.message);
-        this.user.stats.followers++;
+        this.y = data.data.has_follow;
       } else {
-        this.msg.toast(data.error);
+        this.msg.toast('Error');
       }
-    }, (error) => {
-      this.msg.toast(error.message)
     })
   }
 

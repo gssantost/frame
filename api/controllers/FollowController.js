@@ -2,21 +2,24 @@ import helpers from '../helpers';
 
 const { db, queries } = helpers;
 
-/** GET: get all stats for profile (number of personal posts, followers and followings) */
+/** GET: check if user follows other user */
 const get = (req, res) => {
-  const { user_id } = req.user;
-  db.task(t => {
-    return t.batch([
-      t.one(queries.follows['postsCount'], user_id),
-      t.one(queries.follows['followings'], user_id),
-      t.one(queries.follows['followers'], user_id)
-    ]);
-  }).then(data => {
-    let dataAsOne = {};
-    data.map(obj => Object.keys(obj).forEach(key => dataAsOne[key] = obj[key]))
-    res.send({status: 200, data: dataAsOne})
+  const { user: { user_id }, params: { userId } } = req;
+  db.connect().then(obj => {
+    obj.oneOrNone(queries.follows['check'], [userId, user_id])
+      .then(data => {
+        let result = { 
+          has_follow: true,
+        };
+        if (data === null) {
+          result['has_follow'] = false;
+        }
+        res.send({status: 200, data: result});
+      }).catch(e => { 
+        console.log(e.message || e);
+        res.send({status: 402, error: ''});
+      })
   }).catch(e => {
-    console.log(e.message || e)
     res.send({status: 500, error: e.message || e})
   })
 }
@@ -38,6 +41,7 @@ const post = (req, res) => {
   })
 }
 
+/** DELETE: */
 const deleteFollow = (req, res) => {
   const { user: { user_id }, params: { followId } } = req;
   db.connect().then(obj => {

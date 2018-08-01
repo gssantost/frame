@@ -5,6 +5,7 @@ import { Camera } from '@ionic-native/camera';
 import { MessageController } from '../../utils';
 import { TokenProvider } from '../../providers/token/token';
 import { Urls as srv } from '../../utils';
+import { HomePage } from '../home/home';
 /**
  * Generated class for the CameraPage page.
  *
@@ -86,15 +87,17 @@ export class CameraPage {
 
     this.pictureService.upload(`${srv.BASE_URL}/posts/`, options)
       .then((data) => {
-        console.log(JSON.stringify(data) + " Uploaded Successfully");
         this.msg.dismiss();
-        this.msg.show('Success', data.response);
         this.description = '';
-        this.navCtrl.pop();
+        this.selected = false;
+        this.msg.toast('Success');
+        this.navCtrl.setRoot(HomePage);
+        //this.navCtrl.setRoot
       })
       .catch((err) => {
         console.log(JSON.stringify(err));
         this.msg.dismiss();
+        this.selected = false;
         this.msg.show('Error', err.message);
       })
   }

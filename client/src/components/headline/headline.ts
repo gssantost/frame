@@ -14,7 +14,7 @@ import { User } from '../../utils';
 export class HeadlineComponent implements AfterViewInit {
 
   @Input() props: User;
-  @Input() editable: boolean;
+  @Input() followable: boolean;
   @Output() navigate: EventEmitter<any> = new EventEmitter();
   @Output() follow: EventEmitter<any> = new EventEmitter();
 
@@ -26,8 +26,14 @@ export class HeadlineComponent implements AfterViewInit {
     this.navigate.emit(null);
   }
 
+  handleFollow() {
+    this.follow.emit({ id: this.props.user_id, followable: this.followable });
+  }
+
+  /*
   handleFollow(id: number) {
     this.follow.emit(id);
   }
+  */
 
 }
