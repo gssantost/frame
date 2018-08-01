@@ -9,8 +9,10 @@ const get = (req, res) => {
       .then((data) => {
         console.log(data)
         res.send({status: 200, data: data})
+        obj.done();
       }).catch((e) => {
         res.send({status: 402, message: e.message || e})
+        obj.done();
       })
   }).catch((e) => {
     res.send({status: 500, message: e.message || e})

@@ -29,10 +29,12 @@ export class SearchPage {
     console.log(event);
     if (event.hasOwnProperty('user_id')) {
       const { user_id } = event; 
-      this.navCtrl.push(ProfilePage, { user_id })
+      console.log(user_id);
+      this.navCtrl.push(ProfilePage, { userId: user_id })
     } else {
-      const { tag_id } = event;
-      this.navCtrl.push(TagViewPage, { tag_id });
+      const { tag_id, tag_des } = event;
+      console.log(tag_des);
+      this.navCtrl.push(TagViewPage, { tagId: tag_id, tagDes: tag_des });
     }
   }
 

@@ -20,6 +20,7 @@ export class TagViewPage {
 
   posts: any;
   hasResult: boolean;
+  tagTitle: string;
 
   constructor(
     public navCtrl: NavController, 
@@ -41,6 +42,7 @@ export class TagViewPage {
             this.hasResult = false;
           }
           this.hasResult = true;
+          this.tagTitle = this.navParams.get('tagDes');
           this.posts = data.data;
         } else {
           this.msg.toast('Error');

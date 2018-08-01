@@ -53,4 +53,10 @@ export class SearchBoxComponent implements OnInit {
     this.onClick.emit($result);
   }
 
+  /*
+  handle(id) {
+    this.onClick.emit(id);
+  }
+  */
+
 }

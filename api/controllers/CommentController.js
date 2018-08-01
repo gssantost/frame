@@ -9,9 +9,11 @@ const getByMediaId = (req, res) => {
       .then(data => {
         const mapped = data.map(post => mapResult.mapUrls(post));
         res.send({status: 200, data: mapped});
+        obj.done();
       })
       .catch(e => {
         res.send({status: 404, error: e.message || e});
+        obj.done();
       })
   }).catch(e => {
     res.send({status: 500, error: e.message || e});
@@ -24,9 +26,11 @@ const getCount = (req, res) => {
     obj.one(queries.comments['commentsCount'], req.params.mediaId)
       .then(data => {
         res.send({status: 200, data: data});
+        obj.done();
       })
       .catch(e => {
         res.send({status: 404, error: e.message || e});
+        obj.done();
       })
   }).catch(e => {
     res.send({status: 500, error: e.message || e});
@@ -52,9 +56,11 @@ const update = (req, res) => {
     obj.one(queries.comments['update'], [text.trim(), commentId, user_id])
       .then(data => {
         res.send({status: 200, data: data, message: 'Done!'});
+        obj.done();
       })
       .catch(e => {
         res.send({status: 404, error: e.message || e});
+        obj.done();
       })
   }).catch(e => {
     res.send({status: 500, error: e.message || e});
@@ -67,9 +73,11 @@ const deleteComment = (req, res) => {
     obj.oneOrNone(queries.comments['delete'], req.params.commentId)
       .then(data => {
         res.send({status: 200, message: 'Comment deleted'});
+        obj.done();
       })
       .catch(e => {
         res.send({status: 404, error: e.message || e});
+        obj.done();
       })
   }).catch(e => {
     res.send({status: 500, error: e.message || e});

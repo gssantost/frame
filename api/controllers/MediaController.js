@@ -140,6 +140,15 @@ const post = (req, res) => {
 
   db.task(async t => {
     const media = await t.one(queries.media['create'], [description, file.path, user.user_id]);
+    
+    /** OPCIONAL */
+    /*let array = [];
+    for (let i = 0; i < hashtag.length; i++) {
+      array.push(t.oneOrNone('SELECT tag_id, tag_des FROM tags WHERE tag_des=$1', hashtag[i]));
+    }*/
+
+    
+
     if (media) {
       let array = [];
       for (let i = 0; i < hashtag.length; i++) {

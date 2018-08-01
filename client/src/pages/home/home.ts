@@ -61,7 +61,7 @@ export class HomePage {
   }
 
   search() {
-    this.navCtrl.setRoot(SearchPage);
+    this.navCtrl.push(SearchPage);
   }
 
   showProfile(id) {
